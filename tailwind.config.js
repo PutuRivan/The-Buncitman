@@ -7,10 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      backgroundImage : {
+        'hero-image' : "url('/Hero-bg.jpg')",
+      }
     },
   },
   plugins: [],
