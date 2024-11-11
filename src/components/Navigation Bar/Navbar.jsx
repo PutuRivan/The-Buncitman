@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { IoIosCart, IoIosPerson, IoIosSearch } from "react-icons/io";
+import { IoIosPerson, IoIosSearch } from "react-icons/io";
+import { IoCartOutline } from "react-icons/io5";
 
 const Navbar = () => {
   return (
@@ -18,7 +19,7 @@ const Navbar = () => {
         <div className="flex flex-row gap-5">
           <IoIosSearch size={30} />
           <IoIosPerson size={30} />
-          <IoIosCart size={30} />
+          <IoCartOutline size={30} />
         </div>
       </div>
     </nav>
