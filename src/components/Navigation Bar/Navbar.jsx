@@ -5,18 +5,20 @@ import { IoIosCart, IoIosPerson, IoIosSearch } from "react-icons/io";
 
 const Navbar = () => {
   return (
-    <nav className="flex flex-row justify-between items-center px-5 h-[85px]">
-      <div className="">Logo</div>
+    <nav className="flex flex-row justify-between items-center px-5 h-[85px] border-t-2 border-black bg-neutral-600">
+      <div className="">
+        <Image src="/The Buncitmen Logo.png" alt="Logo" width={80} height={80}/>
+      </div>
       <div className="flex flex-row gap-5">
         <div className="flex flex-row gap-5">
-          <Link href="/">Home</Link>
-          <Link href="/shop">Shop</Link>
-          <Link href="/contact">Contact</Link>
+          <Link href="/" className="text-Heading-3">Home</Link>
+          <Link href="/shop" className="text-Heading-3">Shop</Link>
+          <Link href="/contact" className="text-Heading-3">Contact</Link>
         </div>
         <div className="flex flex-row gap-5">
-          <IoIosSearch size={24} />
-          <IoIosPerson size={24} />
-          <IoIosCart size={24} />
+          <IoIosSearch size={30} />
+          <IoIosPerson size={30} />
+          <IoIosCart size={30} />
         </div>
       </div>
     </nav>

@@ -1,44 +1,45 @@
+import Image from "next/image";
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-row justify-between m-10">
+    <footer className="flex flex-row justify-between p-20 bg-neutral-600">
       <div className="flex flex-col gap-2">
         <div className="">
-          <h1 className="text-xl font-bold">logo</h1>
+        <Image src="/The Buncitmen Logo.png" alt="Logo" width={100} height={100}/>
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-bold">Address :</h3>
-          <p className="tet-lg">Level 1, 12 sample St, Sydney NSW 2000</p>
+          <h3 className="text-Heading-4 font-bold">Address :</h3>
+          <p className="text-Heading-5">Level 1, 12 sample St, Sydney NSW 2000</p>
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-bold">Contact :</h3>
-          <p className="text-lg">Phone : 02 1234 5678</p>
-          <p className="text-lg">info@relume.io</p>
+          <h3 className="text-Heading-4 font-bold">Contact :</h3>
+          <p className="text-Heading-5">Phone : 02 1234 5678</p>
+          <p className="text-Heading-5">info@relume.io</p>
         </div>
         <div className="flex flex-row gap-3">
-          <FaFacebook size={24}/>
-          <FaInstagram size={24}/>
-          <FaXTwitter size={24}/>
-          <FaLinkedin size={24}/>
-          <FaYoutube size={24}/>
+          <FaFacebook size={20}/>
+          <FaInstagram size={20}/>
+          <FaXTwitter size={20}/>
+          <FaLinkedin size={20}/>
+          <FaYoutube size={20}/>
         </div>
       </div>
       <div className="flex flex-row gap-3">
         <div className="flex flex-col gap-3">
-          <h1 className="text-md font-bold">About Us</h1>
-          <h1 className="text-md font-bold">Our Menu</h1>
-          <h1 className="text-md font-bold">Contact Us</h1>
-          <h1 className="text-md font-bold">Blog Posts</h1>
-          <h1 className="text-md font-bold">Gift Cards</h1>
+          <h1 className="text-Heading-4 font-semibold">About Us</h1>
+          <h1 className="text-Heading-4 font-semibold">Our Menu</h1>
+          <h1 className="text-Heading-4 font-semibold">Contact Us</h1>
+          <h1 className="text-Heading-4 font-semibold">Blog Posts</h1>
+          <h1 className="text-Heading-4 font-semibold">Gift Cards</h1>
         </div>
         <div className="flex flex-col gap-3">
-          <h1 className="text-md font-bold">FAQ Section</h1>
-          <h1 className="text-md font-bold">Store Locator</h1>
-          <h1 className="text-md font-bold">Sustainability Efforts</h1>
-          <h1 className="text-md font-bold">Careers Page</h1>
-          <h1 className="text-md font-bold">Press Releases</h1>
+          <h1 className="text-Heading-4 font-semibold">FAQ Section</h1>
+          <h1 className="text-Heading-4 font-semibold">Store Locator</h1>
+          <h1 className="text-Heading-4 font-semibold">Sustainability Efforts</h1>
+          <h1 className="text-Heading-4 font-semibold">Careers Page</h1>
+          <h1 className="text-Heading-4 font-semibold">Press Releases</h1>
         </div>
       </div>
     </footer>

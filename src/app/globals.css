@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .circular-image {
-  width: 100px; /* Set a width */
-  height: 100px; /* Set a height */
+  width: 80px; /* Set a width */
+  height: 80px; /* Set a height */
   border-radius: 50%; /* Make it circular */
   object-fit: cover; /* Ensures the image covers the area without distortion */
 }
