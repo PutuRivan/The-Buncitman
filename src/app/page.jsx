@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <section className="bg-hero-image bg-cover bg-center h-screen flex">
-        <div className="flex flex-col text-black w-[35rem] h-full justify-center mx-24">
+        <div className="flex flex-col text-white w-[40rem] h-full justify-center mx-24 gap-5">
           <h1 className="text-Heading-1 font-bold">
             Medium length hero headline goes here
           </h1>
@@ -24,24 +24,24 @@ const Home = () => {
       <section className="grid grid-cols-2 gap-5 m-20">
         <div className="flex flex-col justify-center gap-5">
           <div className="flex flex-col">
-            <h1 className="text-Heading-1 font-bold">
+            <h1 className="text-Heading-2 font-bold">
               Discover Our Premium Coffee Bean Selection
             </h1>
-            <p className="text-Heading-3 font-semibold">
+            <p className="text-Heading-4 font-normal">
               Experience the rich flavors of our carefully sourced coffee beans.
               Each variety is crafted to elevate your coffee experience.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-8">
             <div className="flex flex-col gap-3">
-              <h2 className="text-Heading-2 font-bold">Subheading one</h2>
+              <h2 className="text-Heading-3 font-semibold">Subheading one</h2>
               <p className="text-Heading-4 font-normal">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse varius enim in eros.
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <h2 className="text-Heading-2 font-bold">Subheading two</h2>
+              <h2 className="text-Heading-3 font-semibold">Subheading two</h2>
               <p className="text-Heading-4 font-normal">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse varius enim in eros.

@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        'Heading-1': ['30px', {
-          lineHeight: '40px'
+        'Heading-1': ['60px', {
+          lineHeight: '64px'
         }],
-        'Heading-2': ['24px', {
-          lineHeight: '32px'
+        'Heading-2': ['45px', {
+          lineHeight: '52px'
         }],
         'Heading-3': ['20px', {
           lineHeight: '28px'
