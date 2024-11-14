@@ -1,17 +1,31 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import { FaFacebook, FaInstagram, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaXTwitter,
+  FaYoutube,
+} from "react-icons/fa6";
 
 const Footer = () => {
   return (
     <footer className="flex flex-row justify-between p-20 bg-neutral-600">
       <div className="flex flex-col gap-2">
         <div className="">
-        <Image src="/The Buncitmen Logo.png" alt="Logo" width={100} height={100}/>
+          <Image
+            src="/The Buncitmen Logo.png"
+            alt="Logo"
+            width={100}
+            height={100}
+          />
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="text-Heading-4 font-bold">Address :</h3>
-          <p className="text-Heading-5">Level 1, 12 sample St, Sydney NSW 2000</p>
+          <p className="text-Heading-5">
+            Level 1, 12 sample St, Sydney NSW 2000
+          </p>
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="text-Heading-4 font-bold">Contact :</h3>
@@ -19,11 +33,26 @@ const Footer = () => {
           <p className="text-Heading-5">info@relume.io</p>
         </div>
         <div className="flex flex-row gap-3">
-          <FaFacebook size={20}/>
-          <FaInstagram size={20}/>
-          <FaXTwitter size={20}/>
-          <FaLinkedin size={20}/>
-          <FaYoutube size={20}/>
+          <Link href="https://www.instagram.com/thebuncitmen/" target="_blank">
+            <FaInstagram size={20} />
+          </Link>
+
+          <Link
+            href="https://web.facebook.com/thebuncitmencoffeeroastery/?locale=id_ID&_rdc=1&_rdr#"
+            target="_blank"
+          >
+            <FaFacebook size={20} />
+          </Link>
+          <Link href="https://x.com/thebuncitmen" target="_blank">
+            <FaXTwitter size={20} />
+          </Link>
+
+          <Link
+            href="https://www.youtube.com/channel/UC1UhwOULw-f33ijnf9eC6rw"
+            target="_blank"
+          >
+            <FaYoutube size={20} />
+          </Link>
         </div>
       </div>
       <div className="flex flex-row gap-3">
@@ -37,7 +66,9 @@ const Footer = () => {
         <div className="flex flex-col gap-3">
           <h1 className="text-Heading-4 font-semibold">FAQ Section</h1>
           <h1 className="text-Heading-4 font-semibold">Store Locator</h1>
-          <h1 className="text-Heading-4 font-semibold">Sustainability Efforts</h1>
+          <h1 className="text-Heading-4 font-semibold">
+            Sustainability Efforts
+          </h1>
           <h1 className="text-Heading-4 font-semibold">Careers Page</h1>
           <h1 className="text-Heading-4 font-semibold">Press Releases</h1>
         </div>

@@ -8,3 +8,9 @@
   border-radius: 50%; /* Make it circular */
   object-fit: cover; /* Ensures the image covers the area without distortion */
 }
+
+
+
+tr{
+  text-align: center;
+}

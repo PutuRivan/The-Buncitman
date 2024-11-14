@@ -1,20 +1,34 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaRegHeart } from "react-icons/fa6";
 
-const Product = ({id, name, price }) => {
+const Product = ({ id, name, price, image }) => {
+  function formatPrice(price) {
+    if (price >= 1000) {
+      return (
+        (price / 1000)
+          .toFixed(price % 1000 === 0 ? 0 : 1)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "K"
+      );
+    }
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
   return (
-    <Link href={`/product/${id}`}>
-      <figure className="">
-        <img src="https://placehold.co/600x400" alt="Product" />
+    <Link href={`/shop/product/${id}`} className="w-auto">
+      <figure className="flex justify-center">
+        <Image
+          src={image}
+          alt="Product"
+          width={256}
+          height={256}
+          className="w-64 h-64"
+        />
       </figure>
       <div className="flex flex-row justify-between items-center">
-        <div>
+        <div className="flex flex-col items-center w-full">
           <h2 className="text-Heading-3 font-bold">{name}</h2>
-          <h4 className="text-Heading-2">{price}</h4>
-        </div>
-        <div>
-          <FaRegHeart size={45} />
+          <h4 className="text-Heading-4">{formatPrice(price)}</h4>
         </div>
       </div>
     </Link>

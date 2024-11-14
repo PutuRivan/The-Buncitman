@@ -28,12 +28,12 @@ const page = () => {
           <div className="flex justify-end">
             <p className="text-Heading-6">Forgot Password?</p>
           </div>
-          <button className="border-2 border-black p-2 rounded-xl">
+          <button className="border-2 border-black p-2 rounded-xl hover:text-white hover:bg-neutral-950">
             Login
           </button>
           <div className="place-items-center">
             <p className="text-Heading-6">
-              Already User? <Link href="/register">Sign Up</Link>
+              Don&apos;t have account? <Link href="/register" className="font-bold">Sign Up</Link>
             </p>
           </div>
         </form>

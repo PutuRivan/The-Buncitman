@@ -35,16 +35,18 @@ const Home = () => {
           <div className="grid grid-cols-2 gap-8">
             <div className="flex flex-col gap-3">
               <h2 className="text-Heading-3 font-semibold">Subheading one</h2>
-              <p className="text-Heading-4 font-normal">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse varius enim in eros.
+              <p className="text-Heading-4 font-normal text-justify">
+                Biji kopi yang The Buncitmen tawarkan memiliki kualitas dan
+                kenikmatan yang tidak bisa diragukan, sehingga menghasilkan cita
+                rasa yang sesuai dengan selera
               </p>
             </div>
             <div className="flex flex-col gap-3">
               <h2 className="text-Heading-3 font-semibold">Subheading two</h2>
-              <p className="text-Heading-4 font-normal">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse varius enim in eros.
+              <p className="text-Heading-4 font-normal text-justify">
+                Produk kopi yang kami tawarkan dikemas menjadi minuman botol
+                agar lebih praktis dan lebih mudah untuk dinikmati kapanpun
+                dimanapun, serta pilihan rasa yang beragam.
               </p>
             </div>
           </div>
@@ -107,8 +109,12 @@ const Home = () => {
         </div>
         <div className="flex flex-col items-center gap-3 mt-5">
           <h1 className="text-Heading-1 font-bold">We&apos;re hiring!</h1>
-          <p className="text-Heading-3 font-semibold">Join our team and share your passion for coffee</p>
-          <button className="rounded-md p-2 border-black border-2 text-Heading-4">Open Positions</button>
+          <p className="text-Heading-3 font-semibold">
+            Join our team and share your passion for coffee
+          </p>
+          <button className="rounded-md p-2 border-black border-2 text-Heading-4 hover:text-white hover:bg-neutral-950">
+            Open Positions
+          </button>
         </div>
       </section>
     </>

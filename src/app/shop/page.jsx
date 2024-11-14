@@ -1,10 +1,10 @@
-"use client";
 
 import Product from "@/components/Card/Product";
-import React, { useState } from "react";
-import { ProductName } from "@/data/product";
+import React from "react";
+import { getProducts } from "../pages/api/products";
 
-const Shop = () => {
+const Shop = async () => {
+  const products = await getProducts();
   return (
     <>
       <section className="flex flex-col gap-10 p-10">
@@ -15,12 +15,13 @@ const Shop = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-10 mx-10">
-          {ProductName.map((item) => (
+          {products.map((item) => (
             <Product
               key={item.id}
               name={item.name}
               price={item.price}
               id={item.id}
+              image={item.imageUrl}
             />
           ))}
         </div>
