@@ -4,6 +4,9 @@ const nextConfig = {
         remotePatterns:[
             {
                 hostname:'placehold.co'
+            },
+            {
+                hostname:'res.cloudinary.com'
             }
         ]
     }
