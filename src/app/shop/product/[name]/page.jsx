@@ -19,10 +19,12 @@ const page = () => {
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex flex-col">
-          <h1 className="text-Heading-2 font-semibold">Arabica Beans</h1>
+          <h1 className="text-Heading-2 text-blue-800 font-semibold">
+            Arabica Beans
+          </h1>
           <div className="flex flex-row gap-3  items-center">
             <div className="px-3 border-r-2 border-black">
-              <h3 className="text-Heading-3 font-bold">$55</h3>
+              <h3 className="text-Heading-3 text-blue-500 font-bold">$55</h3>
             </div>
             <div className="flex flex-col">
               <div className="flex flex-row">
@@ -37,8 +39,10 @@ const page = () => {
             </div>
           </div>
           <div className="flex flex-col">
-            <h4 className="text-Heading-3 font-semibold">Details</h4>
-            <p className="text-Heading-4">
+            <h4 className="text-Heading-3 text-blue-500 font-semibold">
+              Details
+            </h4>
+            <p className="text-Heading-4 text-red-800">
               Our premium Arabica beans are sourced from the finest farms. Enjoy
               a rich flavor profile that elevates your coffee experience.
             </p>
@@ -47,7 +51,9 @@ const page = () => {
         <form action="" className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-3">
             <button className=" border-2 border-black p-2">Add to Cart</button>
-            <button className=" border-2 border-black p-2 bg-black text-white">Buy Now</button>
+            <button className=" border-2 border-black p-2 bg-black text-white">
+              Buy Now
+            </button>
           </div>
           <div className="flex flex-col items-center">
             <label htmlFor="">Quantity</label>

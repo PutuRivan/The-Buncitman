@@ -1,4 +1,3 @@
-
 import Product from "@/components/Card/Product";
 import React from "react";
 import { getProducts } from "../pages/api/products";
@@ -9,8 +8,8 @@ const Shop = async () => {
     <>
       <section className="flex flex-col gap-10 p-10">
         <div>
-          <h1 className="text-Heading-1 font-bold">Products</h1>
-          <p className="text-Heading-3 font-semibold">
+          <h1 className="text-Heading-1 tet-red-500 font-bold">Products</h1>
+          <p className="text-Heading-3 text-blue-500 font-semibold">
             Discover our premium coffee beans and bottled delights.
           </p>
         </div>

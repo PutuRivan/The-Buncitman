@@ -9,7 +9,7 @@ const page = () => {
       </section>
 
       <section className="flex flex-col gap-5 items-center justify-center my-10">
-        <h1 className="text-Heading-1 font-bold">Register</h1>
+        <h1 className="text-Heading-1 tet-red-500 font-bold">Register</h1>
         <form action="" className="flex flex-col gap-5 w-80">
           <div className="flex flex-col">
             <label htmlFor="">Create Username</label>
@@ -43,7 +43,7 @@ const page = () => {
             Register
           </button>
           <div className="place-items-center">
-            <p className="text-Heading-6">
+            <p className="text-Heading-6 text-green-800">
               Have an Account? <Link href="/login">Login</Link>
             </p>
           </div>

@@ -27,8 +27,8 @@ const Product = ({ id, name, price, image }) => {
       </figure>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-col items-center w-full">
-          <h2 className="text-Heading-3 font-bold">{name}</h2>
-          <h4 className="text-Heading-4">{formatPrice(price)}</h4>
+          <h2 className="text-Heading-3 text-blue-500 font-bold">{name}</h2>
+          <h4 className="text-Heading-4 text-red-800">{formatPrice(price)}</h4>
         </div>
       </div>
     </Link>

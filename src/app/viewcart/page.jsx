@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -54,7 +54,7 @@ const Page = () => {
       </div>
       <div className="bg-blue-500 w-1/3">
         <div className="bg-gray-100 p-4 rounded-md">
-          <h2 className="text-Heading-3 font-semibold text-center">
+          <h2 className="text-Heading-3 text-blue-500 font-semibold text-center">
             Cart Totals
           </h2>
           <div className="flex justify-between mt-2">
@@ -79,7 +79,10 @@ const Page = () => {
             </div>
           </div>
           <div className="mt-4">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md w-full" onClick={() => router.push('/viewcart/checkoutdetails')}>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
+              onClick={() => router.push("/viewcart/checkoutdetails")}
+            >
               Proceed to Checkout
             </button>
           </div>

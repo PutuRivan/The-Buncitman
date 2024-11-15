@@ -31,11 +31,11 @@ const contact = () => {
     <>
       <section className="grid grid-cols-2 gap-5">
         <div className="flex flex-col justify-center p-10">
-          <h1 className="text-Heading-1 font-bold">
+          <h1 className="text-Heading-1 tet-red-500 font-bold">
             Discover The Buncitmen: Your Destination for Premium Coffee
             Experiences
           </h1>
-          <p className="text-Heading-3 font-semibold">
+          <p className="text-Heading-3 text-blue-500 font-semibold">
             At The Buncitmen, we are passionate about delivering the finest
             coffee products. Our carefully sourced coffee beans and expertly
             crafted coffee bottles ensure every sip is a delightful experience.
@@ -53,9 +53,11 @@ const contact = () => {
 
       <section className="flex flex-col items-center gap-10">
         <div className="flex flex-col items-center">
-          <h3 className="text-Heading-3 font-semibold">Connect</h3>
-          <h1 className="text-Heading-1 font-bold">Get in Touch</h1>
-          <h3 className="text-Heading-3 font-semibold">
+          <h3 className="text-Heading-3 text-blue-500 font-semibold">
+            Connect
+          </h3>
+          <h1 className="text-Heading-1 tet-red-500 font-bold">Get in Touch</h1>
+          <h3 className="text-Heading-3 text-blue-500 font-semibold">
             We&apos;d love to hear from you!
           </h3>
         </div>

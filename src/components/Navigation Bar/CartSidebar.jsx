@@ -1,45 +1,53 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+import { IoMdClose } from "react-icons/io";
+import { FaRegTrashAlt } from "react-icons/fa";
 
-const CartSidebar = ({ isOpen, closeCart, items }) => {
+const CartSidebar = ({ isCartOpen, closeCart, items }) => {
   const router = useRouter();
-
+  const indexs = 10;
   return (
     <>
-      {isOpen && (
+      {isCartOpen && (
         <div
           className={`fixed top-0 right-[0] w-[300px] h-full bg-gray-100 shadow-lg overflow-y-auto transition-right duration-300 ease-in-out p-5 z-50`}
         >
           <button
-            className="absolute top-2.5 right-[3.75px] text-2xl border-none bg-transparent cursor-pointer"
+            className="absolute top-3 right-[3.75px] text-2xl border-none bg-transparent cursor-pointer"
             onClick={closeCart}
           >
-            &times;
+            <IoMdClose size={35} color="red" />
           </button>
-          <h2>Your Cart</h2>
-          <div className="mt-[20]">
-            {items.length > 0 ? (
-              items.map((item, index) => (
+          <h2 className="text-center text-Heading-3">Your Cart</h2>
+          <div className="">
+            {indexs > 0 ? (
+              Array(indexs).fill().map((item, index) => (
                 <div
-                  className="flex justify-between py-2 border-b border-gray-300"
+                  className="flex justify-between mt-5 items-center py-5 border-y-2 border-black"
                   key={index}
                 >
-                  <p>{item.name}</p>
-                  <p>${item.price.toFixed(2)}</p>
+                  <img
+                    src="https://res.cloudinary.com/dadbyegpl/image/upload/v1731460310/TheBuncitman/lsryvdej6vnboy7y83f5.jpg"
+                    alt="product"
+                    className="w-14 h-14 rounded"
+                  />
+                  <p>Arabica</p>
+                  <p>Rp 50000</p>
                   <button
-                    className="ml-2 text-red-600 border-none bg-transparent cursor-pointer"
+                    className="ml-2 tet-red-500-600 border-none bg-transparent cursor-pointer"
                     onClick={() => handleRemoveItem(index)}
                   >
-                    Remove
+                    <FaRegTrashAlt />
                   </button>
                 </div>
               ))
             ) : (
-              <p>Your cart is empty</p>
+              <p className="text-Heading-3 text-center">Your cart is empty</p>
             )}
           </div>
+          
           <button
-            className="mt-5 w-full py-2.5 bg-blue-600 text-white border-none cursor-pointer"
+            className="w-full mt-2.5 py-2.5 bg-blue-600 text-white border-none cursor-pointer"
             onClick={() => router.push("/viewcart")}
           >
             Proceed to Checkout

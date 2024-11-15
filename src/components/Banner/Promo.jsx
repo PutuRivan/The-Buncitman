@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
@@ -22,11 +22,11 @@ const Promo = () => {
             <div className="flex gap-5 items-center">
               <HiOutlineSpeakerphone size={40} />
               <div>
-                <h1 className="text-Heading-3 font-bold">
+                <h1 className="text-Heading-3 text-blue-500 font-bold">
                   Selamatkan Hari Anda dengan Secangkir Kopi Spesial – Diskon
                   Hingga 50%!
                 </h1>
-                <p className="text-Heading-4">
+                <p className="text-Heading-4 text-red-800">
                   Segelas Kebaikan untuk Hari yang Lebih Baik - Nikmati Promo
                   Kopi Kami!
                 </p>
@@ -34,7 +34,7 @@ const Promo = () => {
             </div>
             <div className="">
               <button onClick={handleClosePromo}>
-                <IoMdClose size={35} />
+                <IoMdClose size={35} color="red"/>
               </button>
             </div>
           </div>

@@ -7,7 +7,9 @@ const page = () => {
     <section className="p-10 flex flex-row gap-20">
       <div className="w-3/4 p-2">
         <div className="flex justify-between">
-          <h1 className="text-Heading-2 font-bold">Billing Details</h1>
+          <h1 className="text-Heading-2 text-blue-800 font-bold">
+            Billing Details
+          </h1>
           <div className="flex flex-row items-center">
             <FaCaretLeft size={16} />
             <Link href={"/viewcart"}>back to cart</Link>

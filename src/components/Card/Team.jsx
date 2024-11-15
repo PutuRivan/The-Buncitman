@@ -8,11 +8,11 @@ const Team = () => {
         alt="Person"
         className="circular-image"
       />
-      <h3 className="text-Heading-3 font-semibold">Alice Smith</h3>
-      <p className="text-Heading-4">Head Barista</p>
-      <div>
-
-      </div>
+      <h3 className="text-Heading-3 text-blue-500 font-semibold">
+        Alice Smith
+      </h3>
+      <p className="text-Heading-4 text-red-800">Head Barista</p>
+      <div></div>
     </div>
   );
 };

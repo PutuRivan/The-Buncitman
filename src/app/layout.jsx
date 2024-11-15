@@ -11,7 +11,7 @@ import SearchBar from "@/components/Navigation Bar/SearchBar";
 export default function RootLayout({ children }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchBar, setisSearchBar] = useState(false);
-
+  
   const toogleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -27,9 +27,9 @@ export default function RootLayout({ children }) {
       </head>
       <body className={``}>
         <Promo />
-        <Navbar toggleCart={toogleCart} toggleSearch={searchBar}/>
+        <Navbar toggleCart={toogleCart} toggleSearch={searchBar} isSearchOpen={isSearchBar}/>
         <SearchBar isOpen={isSearchBar} />
-        <CartSidebar isOpen={isCartOpen} closeCart={toogleCart} items={[]} />
+        <CartSidebar isCartOpen={isCartOpen} closeCart={toogleCart} items={[10]} />
         {children}
         <Footer />
       </body>

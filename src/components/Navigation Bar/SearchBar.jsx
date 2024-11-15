@@ -9,7 +9,7 @@ const SearchBar = ({isOpen}) => {
           <input
             type="text"
             placeholder="Cari..."
-            className="border-2 border-black p-2 w-60"
+            className="border-2 border-black p-2 w-60 text-black"
           />
           <IoIosSearch size={30} className="absolute top-1 right-2" />
         </div>

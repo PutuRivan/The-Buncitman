@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { IoIosPerson, IoIosSearch } from "react-icons/io";
-import { IoCartOutline } from "react-icons/io5";
-import SearchBar from "./SearchBar";
+import { IoIosSearch, IoMdClose } from "react-icons/io";
+import { IoCartOutline, IoPersonOutline } from "react-icons/io5";
 
-const Navbar = ({ toggleCart, toggleSearch }) => {
+const Navbar = ({ toggleCart, toggleSearch, isSearchOpen }) => {
   return (
     <>
       <nav className="flex flex-row justify-between items-center px-5 h-[85px] border-t-2 border-black bg-neutral-600">
@@ -19,20 +18,34 @@ const Navbar = ({ toggleCart, toggleSearch }) => {
         </div>
         <div className="flex flex-row gap-5">
           <div className="flex flex-row gap-5">
-            <Link href="/" className="text-Heading-3">
+            <Link href="/" className="text-Heading-3 text-blue-500">
               Home
             </Link>
-            <Link href="/shop" className="text-Heading-3">
+            <Link href="/shop" className="text-Heading-3 text-blue-500">
               Shop
             </Link>
-            <Link href="/contact" className="text-Heading-3">
+            <Link href="/contact" className="text-Heading-3 text-blue-500">
               Contact
             </Link>
           </div>
           <div className="flex flex-row gap-5">
-            <IoIosSearch size={30} onClick={toggleSearch} className="cursor-pointer" />
+            {isSearchOpen ? (
+              <IoMdClose
+                size={30}
+                color="red"
+                onClick={toggleSearch}
+                className="cursor-pointer"
+              />
+            ) : (
+              <IoIosSearch
+                size={30}
+                onClick={toggleSearch}
+                className="cursor-pointer"
+              />
+            )}
+
             <Link href="/login">
-              <IoIosPerson size={30} />
+              <IoPersonOutline size={30} />
             </Link>
             <IoCartOutline
               size={30}

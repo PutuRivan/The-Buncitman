@@ -22,15 +22,15 @@ const Footer = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-Heading-4 font-bold">Address :</h3>
-          <p className="text-Heading-5">
+          <h3 className="text-Heading-4 text-red-800 font-bold">Address :</h3>
+          <p className="text-Heading-5 text-green-500">
             Level 1, 12 sample St, Sydney NSW 2000
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-Heading-4 font-bold">Contact :</h3>
-          <p className="text-Heading-5">Phone : 02 1234 5678</p>
-          <p className="text-Heading-5">info@relume.io</p>
+          <h3 className="text-Heading-4 text-red-800 font-bold">Contact :</h3>
+          <p className="text-Heading-5 text-green-500">Phone : 02 1234 5678</p>
+          <p className="text-Heading-5 text-green-500">info@relume.io</p>
         </div>
         <div className="flex flex-row gap-3">
           <Link href="https://www.instagram.com/thebuncitmen/" target="_blank">
@@ -57,20 +57,38 @@ const Footer = () => {
       </div>
       <div className="flex flex-row gap-3">
         <div className="flex flex-col gap-3">
-          <h1 className="text-Heading-4 font-semibold">About Us</h1>
-          <h1 className="text-Heading-4 font-semibold">Our Menu</h1>
-          <h1 className="text-Heading-4 font-semibold">Contact Us</h1>
-          <h1 className="text-Heading-4 font-semibold">Blog Posts</h1>
-          <h1 className="text-Heading-4 font-semibold">Gift Cards</h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            About Us
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Our Menu
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Contact Us
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Blog Posts
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Gift Cards
+          </h1>
         </div>
         <div className="flex flex-col gap-3">
-          <h1 className="text-Heading-4 font-semibold">FAQ Section</h1>
-          <h1 className="text-Heading-4 font-semibold">Store Locator</h1>
-          <h1 className="text-Heading-4 font-semibold">
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            FAQ Section
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Store Locator
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
             Sustainability Efforts
           </h1>
-          <h1 className="text-Heading-4 font-semibold">Careers Page</h1>
-          <h1 className="text-Heading-4 font-semibold">Press Releases</h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Careers Page
+          </h1>
+          <h1 className="text-Heading-4 text-red-800 font-semibold">
+            Press Releases
+          </h1>
         </div>
       </div>
     </footer>
