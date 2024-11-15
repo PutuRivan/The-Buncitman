@@ -15,7 +15,7 @@ const Product = ({ id, name, price, image }) => {
   }
 
   return (
-    <Link href={`/shop/product/${id}`} className="w-auto">
+    <Link href={`/shop/product/${name}`} className="w-auto">
       <figure className="flex justify-center">
         <Image
           src={image}

@@ -1,9 +1,9 @@
 import Product from "@/components/Card/Product";
 import React from "react";
-import { getProducts } from "../pages/api/products";
+import { getAllProducts } from "../api/products";
 
 const Shop = async () => {
-  const products = await getProducts();
+  const products = await getAllProducts("Beans");
   return (
     <>
       <section className="flex flex-col gap-10 p-10">

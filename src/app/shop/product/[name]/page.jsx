@@ -1,16 +1,31 @@
+import { getProductDetails } from "@/app/api/products";
+import AddToCart from "@/components/Form/AddToCart";
 import Image from "next/image";
 import React from "react";
 import { FaStar } from "react-icons/fa6";
 import { IoIosRemove, IoMdAdd } from "react-icons/io";
 
-const page = () => {
+const page = async ({ params: { name } }) => {
+  const details = await getProductDetails(name);
+  function formatPrice(price) {
+    if (price >= 1000) {
+      return (
+        (price / 1000)
+          .toFixed(price % 1000 === 0 ? 0 : 1)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "K"
+      );
+    }
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  const random = parseInt(Math.random() * 5) + 1;
+  console.log(random);
+  
   return (
-    <secton className="grid grid-cols-2 p-20 gap-10">
+    <section className="grid grid-cols-2 p-20 gap-10">
       <div className="flex justify-center">
         <Image
-          src={
-            "https://res.cloudinary.com/dadbyegpl/image/upload/v1731460310/TheBuncitman/lsryvdej6vnboy7y83f5.jpg"
-          }
+          src={details.imageUrl}
           alt="product"
           width={248}
           height={248}
@@ -20,21 +35,24 @@ const page = () => {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col">
           <h1 className="text-Heading-2 text-blue-800 font-semibold">
-            Arabica Beans
+            {details.name}
           </h1>
           <div className="flex flex-row gap-3  items-center">
             <div className="px-3 border-r-2 border-black">
-              <h3 className="text-Heading-3 text-blue-500 font-bold">$55</h3>
+              <h3 className="text-Heading-3 text-blue-500 font-bold">
+                {formatPrice(details.price)}
+              </h3>
             </div>
             <div className="flex flex-col">
               <div className="flex flex-row">
-                <FaStar size={20} />
-                <FaStar size={20} />
-                <FaStar size={20} />
-                <FaStar size={20} />
+                {Array(random)
+                  .fill()
+                  .map((_, index) => (
+                    <FaStar size={20} key={index} />
+                  ))}
               </div>
               <div className="flex flex-row gap-2">
-                <p>(3.5 stars)•10 reviews</p>
+                <p>({random})•{parseInt(Math.random() * 50) + 1} reviews</p>
               </div>
             </div>
           </div>
@@ -42,36 +60,12 @@ const page = () => {
             <h4 className="text-Heading-3 text-blue-500 font-semibold">
               Details
             </h4>
-            <p className="text-Heading-4 text-red-800">
-              Our premium Arabica beans are sourced from the finest farms. Enjoy
-              a rich flavor profile that elevates your coffee experience.
-            </p>
+            <p className="text-Heading-4 text-red-800">{details.description}</p>
           </div>
         </div>
-        <form action="" className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-3">
-            <button className=" border-2 border-black p-2">Add to Cart</button>
-            <button className=" border-2 border-black p-2 bg-black text-white">
-              Buy Now
-            </button>
-          </div>
-          <div className="flex flex-col items-center">
-            <label htmlFor="">Quantity</label>
-            <div className="border-y-2 border-black flex flex-row gap-4  w-full">
-              <button className="border-x-2 border-black w-full h-full p-2 flex justify-center">
-                <IoIosRemove size={24} />
-              </button>
-              <div className="p-2 text-center w-full">
-                <p className="">1</p>
-              </div>
-              <button className="border-x-2 border-black w-full h-full p-2 flex justify-center">
-                <IoMdAdd size={24} />
-              </button>
-            </div>
-          </div>
-        </form>
+        <AddToCart />
       </div>
-    </secton>
+    </section>
   );
 };
 
