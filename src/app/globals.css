@@ -2,20 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.circular-image {
+    width: 80px; /* Set a width */
+    height: 80px; /* Set a height */
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
+  
+  tr{
+    text-align: center;
+  }
