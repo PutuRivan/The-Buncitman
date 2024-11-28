@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import Image from "next/image";
 
 interface CartItem {
   id: number;
@@ -20,8 +20,8 @@ interface CartSidebarProps {
   items: number[];
 }
 
-const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart, items }) => {
-  const router = useRouter();
+const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
+  // const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([
     { id: 1, name: "Arabica", quantity: 2, price: 50000 },
   ]);
@@ -41,6 +41,11 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart, items 
     );
   };
 
+  const handleProceed = () => {
+    window.location.reload();
+    window.location.href = "/viewcart";
+  }
+
   return (
     <Sheet open={isCartOpen} onOpenChange={closeCart}>
       <SheetContent side="right" className="w-[300px]">
@@ -55,10 +60,12 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart, items 
                 key={item.id}
                 className="flex items-center justify-between border-b pb-3"
               >
-                <img
+                <Image
                   src="https://via.placeholder.com/50"
                   alt={item.name}
                   className="w-14 h-14 rounded"
+                  width={56}
+                  height={56}
                 />
                 <div>
                   <p className="font-medium">{item.name}</p>
@@ -104,7 +111,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart, items 
           <Button
             disabled={cartItems.length === 0}
             className="w-full mt-4"
-            onClick={() => router.push("/viewcart")}
+            onClick={handleProceed}
           >
             Proceed to Checkout
           </Button>

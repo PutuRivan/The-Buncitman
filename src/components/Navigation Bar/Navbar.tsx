@@ -23,7 +23,11 @@ interface NavbarProps {
   isSearchOpen: boolean; // State for whether the search bar is open
 }
 
-const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  toggleCart,
+  toggleSearch,
+  isSearchOpen,
+}) => {
   const searchRef = useRef<HTMLDivElement>(null); // Explicitly type the ref
   const pathname = usePathname(); // Get the current route
 
@@ -41,7 +45,10 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen 
   // Close the search bar when clicking outside or pressing "Escape"
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         if (isSearchOpen) toggleSearch(); // Close search bar if open
       }
     };
@@ -83,7 +90,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen 
                 <NavigationMenuLink
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    pathname === "/" && "bg-white text-black border-b-2 border-neutral-300"
+                    pathname === "/" &&
+                      "bg-white text-black border-b-2 border-neutral-300"
                   )}
                 >
                   Home
@@ -142,13 +150,15 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen 
         <div
           ref={searchRef}
           className={cn(
-            "absolute right-40 top-2.5 flex items-center bg-white rounded-full overflow-hidden transition-all duration-300 ease-in-out",
-            isSearchOpen ? "w-56 px-3 shadow-md border border-neutral-100" : "w-8"
+            "absolute right-40 top-0.8 flex items-center bg-white rounded-full overflow-hidden transition-all duration-300 ease-in-out",
+            isSearchOpen
+              ? "w-46 px-3 shadow-md border border-neutral-100"
+              : "w-8"
           )}
         >
           {/* Search Icon (inside the bar) */}
           <Search
-            className="h-5 w-5 text-gray-500 cursor-pointer"
+            className="text-black cursor-pointer"
             onClick={toggleSearch}
           />
           {/* Search Input */}
@@ -157,7 +167,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen 
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="ml-2 flex-grow bg-transparent text-sm focus:outline-none"
+              className="ml-2 py-2 flex-grow bg-transparent text-sm focus:outline-none"
               placeholder="Search..."
               autoFocus
             />
@@ -174,19 +184,19 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, toggleSearch, isSearchOpen 
               )}
               onClick={searchQuery.trim() ? handleSearchSubmit : toggleSearch}
             >
-              {searchQuery.trim() ? <ArrowRight size={14} /> : <X size={14} />}
+              {searchQuery.trim() ? <ArrowRight size={14} /> : <X size={20} color="red" />}
             </button>
           )}
         </div>
 
         {/* User and Cart Buttons */}
-        <Button variant="ghost" size="icon" asChild>
+        <Button variant="ghost" size="icon">
           <Link href="/login">
-            <User className="h-5 w-5" />
+            <User />
           </Link>
         </Button>
         <Button variant="ghost" size="icon" onClick={toggleCart}>
-          <ShoppingCart className="h-5 w-5" />
+          <ShoppingCart />
         </Button>
       </div>
     </nav>
