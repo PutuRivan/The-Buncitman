@@ -3,44 +3,50 @@
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 import React, { useState, useEffect } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { Coffee } from 'lucide-react';
 
 const Promo = () => {
-  const [close, setClose] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setClose(true); // Ensure the promo is visible on the client side
+    setIsVisible(true);
   }, []);
 
   const handleClosePromo = () => {
-    setClose(false);
+    setIsVisible(false);
   };
+
+  if (!isVisible) return null;
+
   return (
-    <>
-      {close && (
-        <header className="flex justify-center bg-neutral-600">
-          <div className="border-x-2 border-t-2 border-black flex flex-row items-center gap-10 py-2 px-10">
-            <div className="flex gap-5 items-center">
-              <HiOutlineSpeakerphone size={40} />
-              <div>
-                <h1 className="text-Heading-4 text-blue-500 font-bold">
-                  Selamatkan Hari Anda dengan Secangkir Kopi Spesial – Diskon
-                  Hingga 50%!
-                </h1>
-                <p className="text-Heading-5 text-red-800">
-                  Segelas Kebaikan untuk Hari yang Lebih Baik - Nikmati Promo
-                  Kopi Kami!
-                </p>
-              </div>
+    <div className="w-full bg-neutral-0 py-1">
+      <div className="container mx-auto">
+        <Alert className="border-black border-2">
+          <Coffee className="h-5 w-5 text-blue-500"/>
+          <div className="flex items-center justify-between">
+            <div>
+              <AlertTitle className="text-blue-500 font-bold">
+                Selamatkan Hari Anda dengan Secangkir Kopi Spesial
+              </AlertTitle>
+              <AlertDescription className="text-red-800">
+                Diskon Hingga 50%! Segelas Kebaikan untuk Hari yang Lebih Baik
+              </AlertDescription>
             </div>
-            <div className="">
-              <button onClick={handleClosePromo}>
-                <IoMdClose size={35} color="red" />
-              </button>
-            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleClosePromo}
+              className="hover:bg-red-100"
+            >
+              <X className="h-6 w-6 text-red-500" />
+            </Button>
           </div>
-        </header>
-      )}
-    </>
+        </Alert>
+      </div>
+    </div>
   );
 };
 

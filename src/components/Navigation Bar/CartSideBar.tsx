@@ -1,77 +1,117 @@
+"use client";
+
 import { useRouter } from "next/navigation";
-import React, { MouseEventHandler } from "react";
-import { IoMdClose } from "react-icons/io";
+import { useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-interface Props {
-    isCartOpen : boolean;
-    closeCart : MouseEventHandler<HTMLButtonElement>;
-
+interface CartItem {
+  id: number;
+  name: string;
+  quantity: number;
+  price: number;
 }
 
-const CartSidebar = ({ isCartOpen, closeCart } : Props) => {
-  const router = useRouter();
-  const indexs = 1;
+interface CartSidebarProps {
+  isCartOpen: boolean;
+  closeCart: () => void;
+  items: number[];
+}
 
-//   const handleRemoveItem = (indexs : string) => {
-//     // Add logic to remove item from cart
-//     console.log(indexs)
-//   };
+const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart, items }) => {
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState<CartItem[]>([
+    { id: 1, name: "Arabica", quantity: 2, price: 50000 },
+  ]);
+
+  const handleRemoveItem = (id: number) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
+  };
+
+  const calculateTotal = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const handleQuantityChange = (id: number, quantity: number) => {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(quantity, 0) } : item
+      )
+    );
+  };
 
   return (
-    <>
-      {isCartOpen && (
-        <div
-          className={`fixed top-0 right-[0] w-[300px] h-full bg-gray-100 shadow-lg overflow-y-auto transition-right duration-300 ease-in-out p-5 z-50`}
-        >
-          <button
-            className="absolute top-3 right-[3.75px] text-2xl border-none bg-transparent cursor-pointer"
-            onClick={closeCart}
-          >
-            <IoMdClose size={35} color="red" />
-          </button>
-          <h2 className="text-center text-Heading-3">Your Cart</h2>
-          <div className="">
-            {indexs > 0 ? (
-              Array(indexs)
-                .fill(2)
-                .map((item, index) => (
-                  <div
-                    className="flex justify-between mt-5 items-center py-5 border-y-2 border-black"
-                    key={index}
-                  >
-                    <img
-                      src="https://res.cloudinary.com/dadbyegpl/image/upload/v1731460310/TheBuncitman/lsryvdej6vnboy7y83f5.jpg"
-                      alt="product"
-                      className="w-14 h-14 rounded"
-                    />
-                    <p>Arabica <span>(2)</span></p>
-                    <p>Rp 50000</p>
+    <Sheet open={isCartOpen} onOpenChange={closeCart}>
+      <SheetContent side="right" className="w-[300px]">
+        <SheetHeader>
+          <SheetTitle>Your Cart</SheetTitle>
+        </SheetHeader>
+
+        <div className="space-y-4 mt-4">
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between border-b pb-3"
+              >
+                <img
+                  src="https://via.placeholder.com/50"
+                  alt={item.name}
+                  className="w-14 h-14 rounded"
+                />
+                <div>
+                  <p className="font-medium">{item.name}</p>
+                  <div className="flex items-center">
                     <button
-                      className="ml-2 tet-red-500-600 border-none bg-transparent cursor-pointer"
-                    //   onClick={() => handleRemoveItem(index)}
+                      className="text-gray-500 hover:text-gray-700"
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity - 1)
+                      }
                     >
-                      <FaRegTrashAlt />
+                      -
+                    </button>
+                    <p className="mx-2">{item.quantity}</p>
+                    <button
+                      className="text-gray-500 hover:text-gray-700"
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity + 1)
+                      }
+                    >
+                      +
                     </button>
                   </div>
-                ))
-            ) : (
-              <p className="text-Heading-3 text-center">Your cart is empty</p>
-            )}
-          </div>
+                </div>
+                <p>Rp {item.price * item.quantity}</p>
+                <button
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="text-red-500"
+                >
+                  <FaRegTrashAlt />
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Your cart is empty</p>
+          )}
+        </div>
 
-          <button
-            className="w-full mt-2.5 py-2.5 bg-blue-600 text-white border-none cursor-pointer"
+        <div className="mt-6">
+          <div className="flex justify-between">
+            <p className="font-medium">Subtotal</p>
+            <p>Rp {calculateTotal()}</p>
+          </div>
+          <Button
+            disabled={cartItems.length === 0}
+            className="w-full mt-4"
             onClick={() => router.push("/viewcart")}
           >
             Proceed to Checkout
-          </button>
+          </Button>
         </div>
-      )}
-    </>
+      </SheetContent>
+    </Sheet>
   );
 };
-
-
 
 export default CartSidebar;
