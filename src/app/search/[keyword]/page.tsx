@@ -1,18 +1,29 @@
+"use client";
+
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getSearchQuery } from "@/lib/action/product";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-interface Props {
-  params: {
-    keyword: string;
-  };
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
 }
-const page = async ({ params }: Props) => {
-  const { keyword } = await params;
-  const decodedKeyword = decodeURIComponent(keyword);
 
-  const product = await getSearchQuery(decodedKeyword);
+const Page = () => {
+  const params = useParams<{ keyword: string }>();
+  const decodedKeyword = decodeURIComponent(params.keyword);
+  const [product, setProduct] = useState<Product[]>([]);
+  useEffect(() => {
+    const data = async () => {
+      const response = await getSearchQuery(decodedKeyword);
+      setProduct(response);
+    };
+    data();
+  });
   return (
     <>
       <Header />
@@ -36,4 +47,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

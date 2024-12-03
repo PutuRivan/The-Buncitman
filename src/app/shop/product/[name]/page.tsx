@@ -1,25 +1,43 @@
+"use client";
+
 import Header from "@/components/Banner/Header";
 import AddToCart from "@/components/form/AddToCart";
 import { getProductDetails } from "@/lib/action/productCategories";
 import { formatPrice } from "@/utils/formatPrice";
 import { random } from "@/utils/randomStars";
 import Image from "next/image";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 
-interface Props {
-  params: {
-    name: string;
-  };
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  description: string;
 }
 
-const page = async ({ params }: Props) => {
-  const { name } = await params;
-  const decodedName = decodeURIComponent(name);
-  const details = await getProductDetails(decodedName);
+const Page = () => {
+  const params = useParams<{ name: string }>();
+  const decodedName = decodeURIComponent(params.name);
+  const [product, setProduct] = useState<Product | null>(null);
 
-  if (!details) {
-    return <div className="text-center text-2xl mt-10">Item Not Found</div>;
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const details = await getProductDetails(decodedName);
+        setProduct(details);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProductDetails();
+  }, [decodedName]);
+
+  if (!product) {
+    return <div className="text-center text-2xl mt-10">Loading...</div>;
   }
 
   return (
@@ -28,7 +46,7 @@ const page = async ({ params }: Props) => {
       <section className="grid grid-cols-2 p-20 gap-10">
         <div className="flex justify-center">
           <Image
-            src={details.imageUrl}
+            src={product.imageUrl}
             alt="product"
             width={248}
             height={248}
@@ -37,11 +55,11 @@ const page = async ({ params }: Props) => {
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col">
-            <h1 className="text-Heading-2 font-semibold">{details.name}</h1>
+            <h1 className="text-Heading-2 font-semibold">{product.name}</h1>
             <div className="flex flex-row gap-3  items-center">
               <div className="px-3 border-r-2 border-black">
                 <h3 className="text-Heading-3 font-bold">
-                  {formatPrice(details.price)}
+                  {formatPrice(product.price)}
                 </h3>
               </div>
               <div className="flex flex-col">
@@ -65,14 +83,14 @@ const page = async ({ params }: Props) => {
             </div>
             <div className="flex flex-col">
               <h4 className="text-Heading-3 font-semibold">Details</h4>
-              <p className="text-Heading-4">{details.description}</p>
+              <p className="text-Heading-4">{product.description}</p>
             </div>
           </div>
-          <AddToCart ProductName={name} />
+          <AddToCart ProductName={product.name} />
         </div>
       </section>
     </>
   );
 };
 
-export default page;
+export default Page;
