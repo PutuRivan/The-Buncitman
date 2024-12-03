@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/GET/productCategories";
