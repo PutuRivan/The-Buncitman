@@ -13,81 +13,69 @@ interface Props {
   };
 }
 
-interface ProductDetails {
-  name: string;
-  price: number;
-  imageUrl: string;
-  description: string;
-}
-
 const page = async ({ params }: Props) => {
-  const { name } = params;
-  const decodedName = decodeURIComponent(name);
-  
-  const details: ProductDetails | null = await getProductDetails(decodedName); // Pastikan fungsi ini mengembalikan null jika produk tidak ditemukan
+  try {
+    const { name } = await params;
+    const decodedName = decodeURIComponent(name);
+    const details = await getProductDetails(decodedName);
+    if (!details) {
+      return <div className="text-center text-2xl mt-10">Item Not Found</div>;
+    }
 
-  if (!details) {
     return (
-      <div className="text-center text-2xl mt-10">
-        Item Not Found
-      </div>
-    );
-  }
-
-  const rating = random(5);
-  const reviews = random(50);
-
-  return (
-    <>
-      <Header />
-      <section className="grid grid-cols-2 p-20 gap-10">
-        <div className="flex justify-center">
-          <Image
-            src={details.imageUrl}
-            alt={details.name}
-            width={475}
-            height={475}
-            className="w-[475px] h-[475px] object-cover rounded-md"
-          />
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col">
-            <h1 className="text-Heading-2 font-semibold">{details.name}</h1>
-            <div className="flex flex-row gap-3 items-center">
-              <div className="px-3 border-r-2 border-black">
-                <h3 className="text-Heading-3 font-bold">
-                  {formatPrice(details.price)}
-                </h3>
+      <>
+        <Header />
+        <section className="grid grid-cols-2 p-20 gap-10">
+          <div className="flex justify-center">
+            <Image
+              src={details.imageUrl}
+              alt="product"
+              width={248}
+              height={248}
+              className="w-[475px] h-[475px]"
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col">
+              <h1 className="text-Heading-2 font-semibold">{details.name}</h1>
+              <div className="flex flex-row gap-3  items-center">
+                <div className="px-3 border-r-2 border-black">
+                  <h3 className="text-Heading-3 font-bold">
+                    {formatPrice(details.price)}
+                  </h3>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex flex-row">
+                    {Array(random(5))
+                      .fill(2)
+                      .map((_, index) => (
+                        <FaStar
+                          size={20}
+                          key={index}
+                          className="text-yellow-600"
+                        />
+                      ))}
+                  </div>
+                  <div className="flex flex-row gap-2">
+                    <p>
+                      ({random(5)})•{random(50)} reviews
+                    </p>
+                  </div>
+                </div>
               </div>
               <div className="flex flex-col">
-                <div className="flex flex-row">
-                  {Array(rating)
-                    .fill(0)
-                    .map((_, index) => (
-                      <FaStar
-                        size={20}
-                        key={index}
-                        className="text-yellow-600"
-                      />
-                    ))}
-                </div>
-                <div className="flex flex-row gap-2">
-                  <p>
-                    ({rating}) • {reviews} reviews
-                  </p>
-                </div>
+                <h4 className="text-Heading-3 font-semibold">Details</h4>
+                <p className="text-Heading-4">{details.description}</p>
               </div>
             </div>
-            <div className="flex flex-col mt-4">
-              <h4 className="text-Heading-3 font-semibold">Details</h4>
-              <p className="text-Heading-4">{details.description}</p>
-            </div>
+            <AddToCart ProductName={name} />
           </div>
-          <AddToCart ProductName={details.name} />
-        </div>
-      </section>
-    </>
-  );
+        </section>
+      </>
+    );
+  } catch (error) {
+    return error;
+  }
 };
 
 export default page;
