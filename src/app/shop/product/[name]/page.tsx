@@ -13,10 +13,18 @@ interface Props {
   };
 }
 
+interface ProductDetails {
+  name: string;
+  price: number;
+  imageUrl: string;
+  description: string;
+}
+
 const page = async ({ params }: Props) => {
   const { name } = params;
   const decodedName = decodeURIComponent(name);
-  const details = await getProductDetails(decodedName);
+  
+  const details: ProductDetails | null = await getProductDetails(decodedName); // Pastikan fungsi ini mengembalikan null jika produk tidak ditemukan
 
   if (!details) {
     return (
@@ -36,10 +44,10 @@ const page = async ({ params }: Props) => {
         <div className="flex justify-center">
           <Image
             src={details.imageUrl}
-            alt="product"
-            width={248}
-            height={248}
-            className="w-[475px] h-[475px]"
+            alt={details.name}
+            width={475}
+            height={475}
+            className="w-[475px] h-[475px] object-cover rounded-md"
           />
         </div>
         <div className="flex flex-col gap-5">
@@ -54,7 +62,7 @@ const page = async ({ params }: Props) => {
               <div className="flex flex-col">
                 <div className="flex flex-row">
                   {Array(rating)
-                    .fill(2)
+                    .fill(0)
                     .map((_, index) => (
                       <FaStar
                         size={20}
@@ -65,17 +73,17 @@ const page = async ({ params }: Props) => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <p>
-                    ({rating})•{reviews} reviews
+                    ({rating}) • {reviews} reviews
                   </p>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col mt-4">
               <h4 className="text-Heading-3 font-semibold">Details</h4>
               <p className="text-Heading-4">{details.description}</p>
             </div>
           </div>
-          <AddToCart ProductName={name} />
+          <AddToCart ProductName={details.name} />
         </div>
       </section>
     </>
