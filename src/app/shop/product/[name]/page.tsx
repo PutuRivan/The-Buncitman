@@ -14,7 +14,7 @@ interface Props {
 }
 
 const page = async ({ params }: Props) => {
-  const { name } = params;
+  const { name } = await params;
   const decodedName = decodeURIComponent(name);
   const details = await getProductDetails(decodedName);
 
