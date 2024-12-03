@@ -3,6 +3,13 @@ import Product from "@/components/Card/Product";
 import { getSearchQuery } from "@/lib/action/product";
 import React from "react";
 
+interface ProductType {
+  id: string;
+  name: string;
+  price: number; // Ganti dengan tipe yang sesuai
+  imageUrl: string;
+}
+
 interface Props {
   params: {
     keyword: string;
@@ -12,7 +19,7 @@ const page = async ({ params }: Props) => {
   const { keyword } = params;
   const decodedKeyword = decodeURIComponent(keyword);
 
-  const product = await getSearchQuery(decodedKeyword);
+  const product: ProductType[] = await getSearchQuery(decodedKeyword);
   return (
     <>
       <Header />
