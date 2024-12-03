@@ -1,52 +1,32 @@
-"use client";
-
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/GET/productCategories";
 import React, { useEffect, useState } from "react";
 
 interface Product {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  description: string;
-  stock: number;
+  product: {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    imageUrl: string;
+  };
+  category: {
+    id: string;
+    name: string;
+  };
 }
-
-interface ProductResponse {
-  id: string;
-  product: Product;
-}
-
 const Shop = () => {
   const name = "Coffee Beans";
-  const [products, setProducts] = useState<ProductResponse[]>([]);
-  const [loading, setLoading] = useState(false);
-
+  const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const data = await getAllProducts(name);
-        setProducts(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
+      const response = await getAllProducts(name);
+      setProducts(response);
     };
     fetchProducts();
   }, [name]);
-
-  if (loading) {
-    return (
-      <div className="text-center">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
   return (
     <>
       <Header />
@@ -64,7 +44,7 @@ const Shop = () => {
           <div className="grid grid-cols-4 gap-10 mx-10">
             {products.map((item) => (
               <Product
-                key={item.id}
+                key={item.product.id}
                 id={item.product.id}
                 name={item.product.name}
                 price={item.product.price}
