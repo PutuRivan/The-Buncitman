@@ -1,6 +1,7 @@
 "use client";
 
 import { formatPrice } from "@/utils/formatPrice";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -47,10 +48,12 @@ const Page = () => {
                 </td>
                 <td className="px-4 py-2 ">
                   <div className="flex justify-center">
-                    <img
+                    <Image
                       src="https://res.cloudinary.com/dadbyegpl/image/upload/v1731460310/TheBuncitman/lsryvdej6vnboy7y83f5.jpg"
                       alt="produk"
                       className="w-20 h-20 rounded-md"
+                      width={80}
+                      height={80}
                     />
                   </div>
                 </td>

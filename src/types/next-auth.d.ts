@@ -1,3 +1,5 @@
+import NextAuth from "next-auth";
+
 declare module "next-auth" {
   interface User {
     name: string;
@@ -11,3 +13,5 @@ declare module "next-auth" {
     };
   }
 }
+
+module.exports = NextAuth;
