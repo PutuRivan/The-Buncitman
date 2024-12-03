@@ -1,11 +1,52 @@
+"use client";
+
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/GET/productCategories";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Shop = async () => {
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  description: string;
+  stock: number;
+}
+
+interface ProductResponse {
+  id: string;
+  product: Product;
+}
+
+const Shop = () => {
   const name = "Coffee Beans";
-  const products = await getAllProducts(name);
+  const [products, setProducts] = useState<ProductResponse[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllProducts(name);
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, [name]);
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <Header />
