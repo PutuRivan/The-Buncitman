@@ -14,13 +14,20 @@ interface Props {
 }
 
 const page = async ({ params }: Props) => {
-  const { name } =  params;
+  const { name } = params;
   const decodedName = decodeURIComponent(name);
   const details = await getProductDetails(decodedName);
 
   if (!details) {
-    return <div className="text-center text-2xl mt-10">Item Not Found</div>;
+    return (
+      <div className="text-center text-2xl mt-10">
+        Item Not Found
+      </div>
+    );
   }
+
+  const rating = random(5);
+  const reviews = random(50);
 
   return (
     <>
@@ -38,7 +45,7 @@ const page = async ({ params }: Props) => {
         <div className="flex flex-col gap-5">
           <div className="flex flex-col">
             <h1 className="text-Heading-2 font-semibold">{details.name}</h1>
-            <div className="flex flex-row gap-3  items-center">
+            <div className="flex flex-row gap-3 items-center">
               <div className="px-3 border-r-2 border-black">
                 <h3 className="text-Heading-3 font-bold">
                   {formatPrice(details.price)}
@@ -46,7 +53,7 @@ const page = async ({ params }: Props) => {
               </div>
               <div className="flex flex-col">
                 <div className="flex flex-row">
-                  {Array(random(5))
+                  {Array(rating)
                     .fill(2)
                     .map((_, index) => (
                       <FaStar
@@ -58,7 +65,7 @@ const page = async ({ params }: Props) => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <p>
-                    ({random(5)})•{random(50)} reviews
+                    ({rating})•{reviews} reviews
                   </p>
                 </div>
               </div>
