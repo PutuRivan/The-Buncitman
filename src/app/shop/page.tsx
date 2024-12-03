@@ -1,34 +1,11 @@
-"use client";
-
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/GET/productCategories";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-interface Product {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-    imageUrl: string;
-  };
-  category: {
-    id: string;
-    name: string;
-  };
-}
-const Shop = () => {
+const Shop = async () => {
   const name = "Coffee Beans";
-  const [products, setProducts] = useState<Product[]>([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await getAllProducts(name);
-      setProducts(response);
-    };
-    fetchProducts();
-  }, [name]);
+  const products = await getAllProducts(name);
   return (
     <>
       <Header />
@@ -46,7 +23,7 @@ const Shop = () => {
           <div className="grid grid-cols-4 gap-10 mx-10">
             {products.map((item) => (
               <Product
-                key={item.product.id}
+                key={item.id}
                 id={item.product.id}
                 name={item.product.name}
                 price={item.product.price}
