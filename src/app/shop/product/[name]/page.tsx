@@ -1,28 +1,25 @@
-import type { NextPage } from "next";
 import Header from "@/components/Banner/Header";
 import AddToCart from "@/components/form/AddToCart";
 import { getProductDetails } from "@/lib/action/productCategories";
 import { formatPrice } from "@/utils/formatPrice";
 import { random } from "@/utils/randomStars";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import React from "react";
 import { FaStar } from "react-icons/fa6";
 
-interface PageProps {
+interface Props {
   params: {
     name: string;
   };
 }
 
-const page: NextPage<PageProps> = async ({ params }) => {
+const page = async ({ params }: Props) => {
   const { name } = params;
   const decodedName = decodeURIComponent(name);
   const details = await getProductDetails(decodedName);
 
   if (!details) {
-    return (
-      <div className="text-center text-2xl mt-10">Item Not Found</div>
-    );
+    return <div className="text-center text-2xl mt-10">Item Not Found</div>;
   }
 
   return (
@@ -79,4 +76,3 @@ const page: NextPage<PageProps> = async ({ params }) => {
 };
 
 export default page;
-

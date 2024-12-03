@@ -1,13 +1,15 @@
-import type { NextPage } from "next";
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getSearchQuery } from "@/lib/action/product";
+import React from "react";
 
-interface PageProps {
-  keyword: string;
+interface Props {
+  params: {
+    keyword: string;
+  };
 }
-
-const SearchPage: NextPage<PageProps> = async ({ keyword }) => {
+const page = async ({ params }: Props) => {
+  const { keyword } = params;
   const decodedKeyword = decodeURIComponent(keyword);
 
   const product = await getSearchQuery(decodedKeyword);
@@ -34,5 +36,4 @@ const SearchPage: NextPage<PageProps> = async ({ keyword }) => {
   );
 };
 
-export default SearchPage;
-
+export default page;
