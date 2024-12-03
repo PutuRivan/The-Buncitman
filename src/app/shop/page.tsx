@@ -1,6 +1,6 @@
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
-import { getAllProducts } from "@/lib/action/productCategories";
+import { getAllProducts } from "@/lib/GET/productCategories";
 import React from "react";
 
 const Shop = async () => {
