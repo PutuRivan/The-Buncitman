@@ -2,12 +2,21 @@
 
 import prisma from "../db";
 
-export async function getSearchQuery(searchQuery: string) {
+interface ProductType {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+export async function getSearchQuery(
+  searchQuery: string
+): Promise<ProductType[]> {
   const products = await prisma.product.findMany({
     where: {
       name: {
         contains: searchQuery, // Mencari yang mengandung kata kunci
-        mode: "insensitive",   // Tidak case-sensitive
+        mode: "insensitive", // Tidak case-sensitive
       },
     },
     orderBy: {
