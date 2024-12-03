@@ -9,7 +9,7 @@ interface Props {
   };
 }
 const page = async ({ params }: Props) => {
-  const { keyword } = await params;
+  const { keyword } =  params;
   const decodedKeyword = decodeURIComponent(keyword);
 
   const product = await getSearchQuery(decodedKeyword);
