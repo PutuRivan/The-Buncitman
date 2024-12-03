@@ -5,28 +5,27 @@ import { IoCallOutline } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Contact from "@/components/Card/Contact";
 
-export const arrayContact = [
-  {
-    id: 1,
-    logo: <MdOutlineEmail size={45} />,
-    description: "Reach us anytime for inquiries or feedback.",
-    contact: "info@bunciten.com",
-  },
-  {
-    id: 2,
-    logo: <IoCallOutline size={45} />,
-    description: "Reach us anytime for inquiries or feedback.",
-    contact: "info@bunciten.com",
-  },
-  {
-    id: 3,
-    logo: <HiOutlineLocationMarker size={45} />,
-    description: "Reach us anytime for inquiries or feedback.",
-    contact: "info@bunciten.com",
-  },
-];
-
 const contact = () => {
+  const arrayContact = [
+    {
+      id: 1,
+      logo: <MdOutlineEmail size={45} />,
+      description: "Reach us anytime for inquiries or feedback.",
+      contact: "info@bunciten.com",
+    },
+    {
+      id: 2,
+      logo: <IoCallOutline size={45} />,
+      description: "Reach us anytime for inquiries or feedback.",
+      contact: "info@bunciten.com",
+    },
+    {
+      id: 3,
+      logo: <HiOutlineLocationMarker size={45} />,
+      description: "Reach us anytime for inquiries or feedback.",
+      contact: "info@bunciten.com",
+    },
+  ];
   return (
     <>
       <section className="grid grid-cols-2 gap-5">
@@ -53,9 +52,7 @@ const contact = () => {
 
       <section className="flex flex-col items-center gap-10">
         <div className="flex flex-col items-center">
-          <h3 className="text-Heading-4 font-semibold">
-            Connect
-          </h3>
+          <h3 className="text-Heading-4 font-semibold">Connect</h3>
           <h1 className="text-Heading-2 font-bold">Get in Touch</h1>
           <h3 className="text-Heading-4 font-semibold">
             We&apos;d love to hear from you!
