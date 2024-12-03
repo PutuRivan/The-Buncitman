@@ -97,6 +97,7 @@ const Home = () => {
                 key={item.id}
                 name={item.name}
                 deskripsi={item.deskripsi}
+                image={item.image}
               />
             ))}
           </div>

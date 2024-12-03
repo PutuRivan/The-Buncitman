@@ -1,12 +1,23 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
+import { postCarts } from "@/lib/action/cart";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { MouseEventHandler, useState } from "react";
 import { IoIosRemove, IoMdAdd } from "react-icons/io";
 
-const AddToCart = () => {
+interface Props {
+  ProductName: string;
+}
+
+const AddToCart = ({ ProductName }: Props) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const { data: session } = useSession();
+  const { toast } = useToast();
+
+  const username = session?.user?.name;
 
   const handleMinus = () => {
     if (quantity <= 1) return;
@@ -24,7 +35,31 @@ const AddToCart = () => {
 
   const handleAddToCart: MouseEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    // Add to cart logic here
+
+    if (!username) {
+      toast({
+        title: "error",
+        description: "Oops you must login",
+        variant: "destructive",
+      });
+      return;
+    }
+    const response = postCarts({ ProductName, username, quantity });
+
+    if (!response) {
+      toast({
+        title: "error",
+        description: "Oops something went wrong",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "success",
+        description: "Berhasil Menambahkan kedalam cart",
+        variant: "success",
+      });
+      window.location.reload();
+    }
   };
 
   return (
@@ -41,7 +76,7 @@ const AddToCart = () => {
         </button>
       </div>
       <div className="flex flex-col items-center">
-        <label htmlFor="">Quantity</label>
+        <label htmlFor="quantity">Quantity</label>
         <div className="border-y-2 border-black flex flex-row gap-4 w-full">
           <button
             type="button"
@@ -50,9 +85,18 @@ const AddToCart = () => {
           >
             <IoIosRemove size={24} />
           </button>
-          <div className="p-2 text-center w-full">
-            <p>{quantity}</p>
-          </div>
+          <input
+            id="quantity"
+            type="text"
+            value={quantity}
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value, 10);
+              if (!isNaN(newValue) && newValue > 0) {
+                setQuantity(newValue);
+              }
+            }}
+            className="w-full text-center"
+          />
           <button
             type="button"
             onClick={handlePlus}

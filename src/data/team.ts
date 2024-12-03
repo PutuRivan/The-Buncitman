@@ -3,36 +3,36 @@ export const team = [
         id: 1,
         name: "Xena",
         position: "Head Barista",
-        image: "/team/Xena.jpg"
+        image: "/Team/Xena.jpg"
     },
     {
         id: 2,
-        name: "John",
+        name: "Jonio",
         position: "Head Barista",
-        image: "https://placehold.co/600x400"
+        image: "/Team/Jonio.jpg"
     },
     {
         id: 3,
-        name: "John",
+        name: "Komeng",
         position: "Head Barista",
-        image: "https://placehold.co/600x400"
+        image: "/Team/Komeng.jpg"
     },
     {
         id: 4,
-        name: "John",
+        name: "layla",
         position: "Head Barista",
-        image: "https://placehold.co/600x400"
+        image: "/Team/Layla.jpg"
     },
     {
         id: 5,
-        name: "John",
+        name: "Reno",
         position: "Head Barista",
-        image: "https://placehold.co/600x400"
+        image: "/Team/Reno.jpg"
     },
     {
         id: 6,
-        name: "John",
+        name: "Rina",
         position: "Head Barista",
-        image: "https://placehold.co/600x400"
+        image: "/Team/Rina.jpg"
     },
 ]

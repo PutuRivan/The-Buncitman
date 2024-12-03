@@ -6,21 +6,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, ShoppingCart, User, X, ArrowRight } from "lucide-react";
 import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
+import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { signOut, useSession } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
-  toggleCart: () => void; // Function to toggle the cart sidebar
-  toggleSearch: () => void; // Function to toggle the search bar
-  isSearchOpen: boolean; // State for whether the search bar is open
+  toggleCart: () => void; 
+  toggleSearch: () => void; 
+  isSearchOpen: boolean; 
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -28,21 +37,31 @@ const Navbar: React.FC<NavbarProps> = ({
   toggleSearch,
   isSearchOpen,
 }) => {
-  const searchRef = useRef<HTMLDivElement>(null); // Explicitly type the ref
-  const pathname = usePathname(); // Get the current route
+  const searchRef = useRef<HTMLDivElement>(null); 
+  const pathname = usePathname(); 
+  const [searchQuery, setSearchQuery] = useState<string>(""); 
+  const { data: session, status } = useSession();
+  const { toast } = useToast();
+  const router = useRouter();
+  const username = session?.user?.name;
 
-  const [searchQuery, setSearchQuery] = useState<string>(""); // Add state for search input
-
-  // Function to handle search submission
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
-      // Logic for search action, e.g., navigating to a search page
-      console.log("Search submitted:", searchQuery);
-      toggleSearch(); // Close the search bar after submission
+      router.push(`/search/${searchQuery}`);
+      toggleSearch(); 
+      setSearchQuery("");
     }
   };
 
-  // Close the search bar when clicking outside or pressing "Escape"
+  const handlesignOut = () => {
+    signOut();
+    toast({
+      title: "error",
+      description: "kamu sudah logout",
+      variant: "destructive",
+    });
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -53,23 +72,15 @@ const Navbar: React.FC<NavbarProps> = ({
       }
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isSearchOpen) {
-        toggleSearch(); // Close search bar if open
-      }
-    };
-
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isSearchOpen, toggleSearch]);
 
   return (
-    <nav className="flex justify-between items-center px-5 h-[85px] border-t-2 border-neutral-300 bg-white">
+    <nav className="flex justify-between items-center px-5 h-[85px] border-b-2 border-neutral-300 bg-white z-50 top-0 fixed w-full">
       {/* Logo */}
       <div>
         <Image
@@ -101,26 +112,17 @@ const Navbar: React.FC<NavbarProps> = ({
 
             {/* Shop Dropdown */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger
-                className={cn(
-                  pathname.includes("/shop") &&
-                    "text-black font-bold border-b-2 border-black"
-                )}
-              >
-                Shop
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                  <li>
-                    <NavigationMenuLink
-                      href="/shop"
-                      className="block p-3 rounded-md hover:bg-gray-100"
-                    >
-                      Coffee Types
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
+              <Link href="/shop" legacyBehavior passHref>
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    pathname === "/shop" &&
+                      "bg-white text-black border-b-2 border-neutral-300"
+                  )}
+                >
+                  Shop
+                </NavigationMenuLink>
+              </Link>
             </NavigationMenuItem>
 
             {/* Contact Link */}
@@ -167,6 +169,11 @@ const Navbar: React.FC<NavbarProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearchSubmit();
+                }
+              }}
               className="ml-2 py-2 flex-grow bg-transparent text-sm focus:outline-none"
               placeholder="Search..."
               autoFocus
@@ -184,17 +191,43 @@ const Navbar: React.FC<NavbarProps> = ({
               )}
               onClick={searchQuery.trim() ? handleSearchSubmit : toggleSearch}
             >
-              {searchQuery.trim() ? <ArrowRight size={14} /> : <X size={20} color="red" />}
+              {searchQuery.trim() ? (
+                <ArrowRight size={14} />
+              ) : (
+                <X size={20} color="red" />
+              )}
             </button>
           )}
         </div>
 
-        {/* User and Cart Buttons */}
-        <Button variant="ghost" size="icon">
-          <Link href="/login">
-            <User />
-          </Link>
-        </Button>
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>
+              <User />
+            </MenubarTrigger>
+            {status === "authenticated" ? (
+              <MenubarContent>
+                <MenubarItem>{username}</MenubarItem>
+                <MenubarItem>Profile</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>
+                  <Button onClick={handlesignOut}>Logout</Button>
+                </MenubarItem>
+              </MenubarContent>
+            ) : (
+              <MenubarContent>
+                <MenubarItem>
+                  <Link href={"/login"}>Login</Link>
+                </MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>
+                  <Link href={"/register"}>Register</Link>
+                </MenubarItem>
+              </MenubarContent>
+            )}
+          </MenubarMenu>
+        </Menubar>
+
         <Button variant="ghost" size="icon" onClick={toggleCart}>
           <ShoppingCart />
         </Button>

@@ -1,17 +1,36 @@
 "use client";
 
-// import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import Image from "next/image";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { useToast } from "@/hooks/use-toast";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { deleteItem, getAllCarts } from "@/lib/action/cart";
+import SideBarCart from "../Card/SideBarCart";
 
 interface CartItem {
-  id: number;
-  name: string;
+  id: string;
+  userId: string;
+  productId: string;
   quantity: number;
-  price: number;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+  };
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
 }
 
 interface CartSidebarProps {
@@ -21,30 +40,57 @@ interface CartSidebarProps {
 }
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
-  // const router = useRouter();
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    { id: 1, name: "Arabica", quantity: 2, price: 50000 },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const router = useRouter();
+  const { data: session } = useSession();
+  const { toast } = useToast();
 
-  const handleRemoveItem = (id: number) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  const username = session?.user?.name;
+
+  useEffect(() => {
+    if (!username) {
+      toast({
+        title: "error",
+        description: "Oops you must login",
+        variant: "destructive",
+      });
+      return;
+    }
+    const data = async () => {
+      const response = await getAllCarts({ username });
+      setCartItems(response);
+    };
+
+    data();
+  }, [username, toast]);
+
+  const handleRemoveItem = async (id: string) => {
+    const remove = await deleteItem(id);
+    if (remove) {
+      const DeleteItems = cartItems.filter((item) => item.id !== id);
+      setCartItems(DeleteItems);
+    }
   };
 
   const calculateTotal = () =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    cartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
 
-  const handleQuantityChange = (id: number, quantity: number) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(quantity, 0) } : item
+  const handleQuantityChange = (id: string, newQuantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const handleProceed = () => {
-    window.location.reload();
-    window.location.href = "/viewcart";
-  }
+    // Post ke order
+    router.push("/checkoutdetails");
+    closeCart();
+  };
 
   return (
     <Sheet open={isCartOpen} onOpenChange={closeCart}>
@@ -55,48 +101,17 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
 
         <div className="space-y-4 mt-4">
           {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between border-b pb-3"
-              >
-                <Image
-                  src="https://via.placeholder.com/50"
-                  alt={item.name}
-                  className="w-14 h-14 rounded"
-                  width={56}
-                  height={56}
-                />
-                <div>
-                  <p className="font-medium">{item.name}</p>
-                  <div className="flex items-center">
-                    <button
-                      className="text-gray-500 hover:text-gray-700"
-                      onClick={() =>
-                        handleQuantityChange(item.id, item.quantity - 1)
-                      }
-                    >
-                      -
-                    </button>
-                    <p className="mx-2">{item.quantity}</p>
-                    <button
-                      className="text-gray-500 hover:text-gray-700"
-                      onClick={() =>
-                        handleQuantityChange(item.id, item.quantity + 1)
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <p>Rp {item.price * item.quantity}</p>
-                <button
-                  onClick={() => handleRemoveItem(item.id)}
-                  className="text-red-500"
-                >
-                  <FaRegTrashAlt />
-                </button>
-              </div>
+            cartItems.map((item, index) => (
+              <SideBarCart
+                key={index}
+                id={item.id}
+                name={item.product.name}
+                quantity={item.quantity}
+                total={item.product.price * item.quantity}
+                imageUrl={item.product.imageUrl}
+                handleRemove={() => handleRemoveItem(item.id)}
+                handleQuantityChange={handleQuantityChange}
+              />
             ))
           ) : (
             <p className="text-center text-gray-500">Your cart is empty</p>

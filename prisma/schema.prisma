@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Ganti sesuai database yang digunakan (e.g., mysql, sqlite, postgresql)
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       String     @id @default(cuid())
+  name     String     @unique
+  email    String     @unique
+  password String
+  orders   Orders[]
+  cart     CartItem[]
+}
+
+model Product {
+  id          String              @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  imageUrl    String
+  orders      Orders[]
+  categories  ProductCategories[]
+  cartItems   CartItem[]
+}
+
+model Orders {
+  id          String        @id @default(cuid())
+  userId      String
+  user        Users         @relation(fields: [userId], references: [id])
+  productId   String
+  product     Product      @relation(fields: [productId], references: [id])
+  totalAmount Float
+  status      String
+  transaction Transactions?
+}
+
+model Categories {
+  id       String              @id @default(cuid())
+  name     String
+  products ProductCategories[]
+}
+
+model ProductCategories {
+  id         String     @id @default(cuid())
+  productId  String
+  product    Product   @relation(fields: [productId], references: [id])
+  categoryId String
+  category   Categories @relation(fields: [categoryId], references: [id])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model PaymentMethods {
+  id           String         @id @default(cuid())
+  name         String
+  description  String
+  transactions Transactions[]
+}
+
+model Transactions {
+  id        String         @id @default(cuid())
+  orderId   String         @unique
+  order     Orders         @relation(fields: [orderId], references: [id])
+  paymentId String
+  payment   PaymentMethods @relation(fields: [paymentId], references: [id])
+  status    String
+}
