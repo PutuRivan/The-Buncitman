@@ -1,35 +1,44 @@
-import React from "react";
+"use client";
+
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
-import { getAllProducts } from "@/lib/GET/productCategories";
+import { getAllProducts } from "@/lib/action/productCategories";
+import React, { useEffect, useState } from "react";
 
-// interface ProductProps {
-//   id: string;
-//   name: string;
-//   price: number;
-//   imageUrl: string;
-// }
+interface Product {
+  id: string;
+  productId: string;
+  categoryId: string;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    imageUrl: string;
+    description: string;
+    stock: number;
+  };
+  category: {
+    id: string;
+    name: string;
+  };
+}
 
-// interface ShopProps {
-//   products: ProductProps[];
-//   name: string;
-// }
+const Shop = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("Coffee Beans");
 
-const Shop = async () => {
-  const name = "Coffee Beans";
-
-  // Fetch data dari Prisma
-  const productsData = await getAllProducts(name);
-  const products = productsData.map((item) => ({
-    id: item.product.id,
-    name: item.product.name,
-    price: item.product.price,
-    imageUrl: item.product.imageUrl,
-  }));
-
+  useEffect(() => {
+    const data = async () => {
+      // const name = "Coffee Beans";
+      const response = await getAllProducts(selectedCategory);
+      setProducts(response);
+    };
+    data();
+  }, [selectedCategory]);
   return (
     <>
       <Header />
+
       <section className="flex flex-col gap-10 p-10">
         <div className="text-center">
           <h1 className="text-Heading-1 font-bold">Products</h1>
@@ -37,18 +46,33 @@ const Shop = async () => {
             Discover our premium coffee beans and bottled delights.
           </p>
         </div>
+
+        <div className="flex justify-center">
+          <select
+            className="border px-4 py-2 rounded"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="Coffee Beans">Coffee Beans</option>
+            <option value="Coffee Drinks">Coffee Drinks</option>
+          </select>
+        </div>
+
         <div>
-          <h2 className="text-Heading-2 font-bold">{name}</h2>
+          <h2 className="text-Heading-2 font-bold">{selectedCategory}</h2>
           <div className="grid grid-cols-4 gap-10 mx-10">
-            {products.map((product) => (
-              <Product
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                imageUrl={product.imageUrl}
-              />
-            ))}
+            {products.map((item) => {
+              if (item.category.name === "Coffee Beans")
+                return (
+                  <Product
+                    key={item.id}
+                    id={item.product.id}
+                    name={item.product.name}
+                    price={item.product.price}
+                    imageUrl={item.product.imageUrl}
+                  />
+                );
+            })}
           </div>
         </div>
       </section>
