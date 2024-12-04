@@ -26,15 +26,23 @@ interface Product {
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("Coffee Beans");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const data = async () => {
-      // const name = "Coffee Beans";
-      const response = await getAllProducts(selectedCategory);
-      setProducts(response);
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllProducts(selectedCategory);
+        setProducts(response);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
-    data();
+    fetchProducts();
   }, [selectedCategory]);
+
   return (
     <>
       <Header />
@@ -47,7 +55,7 @@ const Shop = () => {
           </p>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-end">
           <select
             className="border px-4 py-2 rounded"
             value={selectedCategory}
@@ -59,11 +67,15 @@ const Shop = () => {
         </div>
 
         <div>
-          <h2 className="text-Heading-2 font-bold">{selectedCategory}</h2>
-          <div className="grid grid-cols-4 gap-10 mx-10">
-            {products.map((item) => {
-              if (item.category.name === "Coffee Beans")
-                return (
+          <h2 className="text-Heading-2 mb-5 font-bold">{selectedCategory}</h2>
+
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="grid grid-cols-4 gap-10 mx-10">
+              {products
+                .filter((item) => item.category.name === selectedCategory)
+                .map((item) => (
                   <Product
                     key={item.id}
                     id={item.product.id}
@@ -71,9 +83,9 @@ const Shop = () => {
                     price={item.product.price}
                     imageUrl={item.product.imageUrl}
                   />
-                );
-            })}
-          </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
     </>
