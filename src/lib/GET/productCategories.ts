@@ -1,11 +1,9 @@
 import prisma from "../db";
 
-export async function getAllProducts(name : string) {
+export async function getAllProducts(name: string) {
   return await prisma.productCategories.findMany({
     where: {
-      category:{
-        name: name
-      }
+      category: { name },
     },
     include: {
       category: true,
