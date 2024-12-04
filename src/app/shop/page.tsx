@@ -1,11 +1,22 @@
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
-import { getAllProducts } from "@/lib/GET/productCategories";
+import prisma from "@/lib/db";
+// import { getAllProducts } from "@/lib/GET/productCategories";
 import React from "react";
 
 const Shop = async () => {
   const name = "Coffee Beans";
-  const products = await getAllProducts(name);
+  const products = await prisma.productCategories.findMany({
+    where: {
+      category:{
+        name: name
+      }
+    },
+    include: {
+      category: true,
+      product: true,
+    },
+  });
   return (
     <>
       <Header />
