@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { deleteItem, getAllCarts } from "@/lib/action/cart";
 import SideBarCart from "../Card/SideBarCart";
+import { postAllOrders } from "@/lib/action/orders";
 
 interface CartItem {
   id: string;
@@ -86,8 +87,20 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
     );
   };
 
-  const handleProceed = () => {
-    // Post ke order
+  const handleProceed = async (username: string, cartItems: CartItem[]) => {
+    console.log("Ditekan")
+    const productName = cartItems.map((item) => item.product.id).toString();
+    const post = await postAllOrders({
+      username,
+      productName,
+    });
+    if (post) {
+      toast({
+        title: "success",
+        description: "Order Placed Successfully",
+        variant: "default",
+      });
+    }
     router.push("/checkoutdetails");
     closeCart();
   };
@@ -126,7 +139,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
           <Button
             disabled={cartItems.length === 0}
             className="w-full mt-4"
-            onClick={handleProceed}
+            onClick={() => handleProceed(username as string, cartItems)}
           >
             Proceed to Checkout
           </Button>

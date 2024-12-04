@@ -49,7 +49,7 @@ export async function postCarts({
         user: true,
       },
     });
-
+    // console.log({user:exitingUser});
     if (exitingUser) {
       const updateCartItem = await prisma.cartItem.update({
         where: {
@@ -82,7 +82,7 @@ export async function postCarts({
           },
         },
       });
-      console.log(newCartItem);
+      // console.log(newCartItem);
       return newCartItem;
     }
   } catch (error) {
@@ -91,8 +91,8 @@ export async function postCarts({
 }
 
 interface updateItem {
-  id : string
-  quantity : number
+  id: string;
+  quantity: number;
 }
 
 export async function updateItem({ id, quantity }: updateItem) {

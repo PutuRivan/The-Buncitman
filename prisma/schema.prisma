@@ -33,7 +33,6 @@ model Product {
   name        String
   description String
   price       Float
-  stock       Int
   imageUrl    String
   orders      Orders[]
   categories  ProductCategories[]
@@ -45,10 +44,13 @@ model Orders {
   userId      String
   user        Users         @relation(fields: [userId], references: [id])
   productId   String
-  product     Product      @relation(fields: [productId], references: [id])
+  product     Product       @relation(fields: [productId], references: [id])
+  quantity    Int
   totalAmount Float
   status      String
   transaction Transactions?
+
+  @@unique([userId, productId])
 }
 
 model Categories {
@@ -60,15 +62,15 @@ model Categories {
 model ProductCategories {
   id         String     @id @default(cuid())
   productId  String
-  product    Product   @relation(fields: [productId], references: [id])
+  product    Product    @relation(fields: [productId], references: [id])
   categoryId String
   category   Categories @relation(fields: [categoryId], references: [id])
 }
 
 model CartItem {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   userId    String
-  user      Users    @relation(fields: [userId], references: [id])
+  user      Users   @relation(fields: [userId], references: [id])
   productId String
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int

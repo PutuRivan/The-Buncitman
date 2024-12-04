@@ -9,7 +9,7 @@
     object-fit: cover; /* Ensures the image covers the area without distortion */
   }
   
-  tr{
+  tr,td,th{
     text-align: center;
   }
   

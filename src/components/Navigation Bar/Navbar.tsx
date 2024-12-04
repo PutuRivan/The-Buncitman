@@ -27,9 +27,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 interface NavbarProps {
-  toggleCart: () => void; 
-  toggleSearch: () => void; 
-  isSearchOpen: boolean; 
+  toggleCart: () => void;
+  toggleSearch: () => void;
+  isSearchOpen: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -37,9 +37,9 @@ const Navbar: React.FC<NavbarProps> = ({
   toggleSearch,
   isSearchOpen,
 }) => {
-  const searchRef = useRef<HTMLDivElement>(null); 
-  const pathname = usePathname(); 
-  const [searchQuery, setSearchQuery] = useState<string>(""); 
+  const searchRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
       router.push(`/search/${searchQuery}`);
-      toggleSearch(); 
+      toggleSearch();
       setSearchQuery("");
     }
   };
@@ -208,7 +208,9 @@ const Navbar: React.FC<NavbarProps> = ({
             {status === "authenticated" ? (
               <MenubarContent>
                 <MenubarItem>{username}</MenubarItem>
-                <MenubarItem>Profile</MenubarItem>
+                <MenubarItem>
+                  <Link href="/checkoutdetails">Order</Link>
+                </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>
                   <Button onClick={handlesignOut}>Logout</Button>
