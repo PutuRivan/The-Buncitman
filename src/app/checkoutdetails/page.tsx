@@ -74,6 +74,14 @@ const Page = () => {
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
+
+    setOrders((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, totalAmount: item.quantity * item.product.price }
+          : item
+      )
+    );
   };
 
   const handleRemove = async (id: string) => {

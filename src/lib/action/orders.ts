@@ -50,46 +50,50 @@ export async function postAllOrders({ username }: PostOrder) {
 
   if (!ExistingCart) return new Error("Cart not found");
 
-  // if (ExistingCart) {
-  //   for (const item of ExistingCart) {
-  //     await prisma.orders.updateMany({
-  //       data: {
-  //         userId: user.id, // Use userId instead of user
-  //         productId: item.product.id, // Use productId from the cartItem
-  //         quantity: item.quantity,
-  //         totalAmount: item.product.price * item.quantity, // Example total amount
-  //         status: "pending",
-  //       },
-  //     });
-  //   }
-  // }
-  
-  for (const item of ExistingCart) {
-    await prisma.orders.createMany({
-      data: {
-        userId: user.id, // Use userId instead of user
-        productId: item.product.id, // Use productId from the cartItem
-        quantity: item.quantity,
-        totalAmount: item.product.price * item.quantity, // Example total amount
-        status: "pending",
-      },
-    });
-  }
-
-  const deleteCart = await prisma.cartItem.deleteMany({
+  const ExistingOrders = await prisma.orders.findMany({
     where: {
       user: {
         name: username,
       },
-      product: {
-        id: {
-          in: ExistingCart.map((item) => item.product.id),
-        },
-      },
+    },
+    include: {
+      product: true,
     },
   });
 
-  return deleteCart;
+
+  if (ExistingOrders.length === 0) {
+    for (const item of ExistingCart) {
+      await prisma.orders.createMany({
+        data: {
+          userId: user.id, // Use userId instead of user
+          productId: item.product.id, // Use productId from the cartItem
+          quantity: item.quantity,
+          totalAmount: item.product.price * item.quantity, // Example total amount
+          status: "pending",
+        },
+      });
+    }
+  } else {
+    for (const item of ExistingOrders) {
+      for (const cartItem of ExistingCart) {
+        if (cartItem.product.name === item.product.name) {
+          await prisma.orders.updateMany({
+            where: {
+              id: item.id,
+            },
+            data: {
+              quantity: item.quantity + cartItem.quantity,
+              totalAmount:
+                item.product.price * (item.quantity + cartItem.quantity),
+            },
+          });
+        }
+      }
+    }
+  }
+
+
 }
 
 interface UpdateOrder {
@@ -116,7 +120,8 @@ export async function updateOrder({ id, quantity }: UpdateOrder) {
       id: id,
     },
     data: {
-      quantity: orders.product.price * quantity,
+      quantity: quantity,
+      totalAmount: orders.product.price * quantity,
     },
   });
 

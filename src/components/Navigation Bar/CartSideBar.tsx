@@ -101,6 +101,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
       });
     }
     router.push("/checkoutdetails");
+    
     closeCart();
   };
 

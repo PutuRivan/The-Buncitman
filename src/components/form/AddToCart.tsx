@@ -33,7 +33,7 @@ const AddToCart = ({ ProductName }: Props) => {
     router.push("/viewcart");
   };
 
-  const handleAddToCart: MouseEventHandler<HTMLFormElement> = (event) => {
+  const handleAddToCart: MouseEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     if (!username) {
@@ -44,21 +44,31 @@ const AddToCart = ({ ProductName }: Props) => {
       });
       return;
     }
-    const response = postCarts({ ProductName, username, quantity });
+    
+    try {
+      const response = await postCarts({ ProductName, username, quantity });
 
-    if (!response) {
+      if (!response) {
+        toast({
+          title: "error",
+          description: "Oops something went wrong",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "success",
+          description: "Berhasil Menambahkan ke dalam cart",
+          variant: "success",
+        });
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
       toast({
         title: "error",
         description: "Oops something went wrong",
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "success",
-        description: "Berhasil Menambahkan kedalam cart",
-        variant: "success",
-      });
-      window.location.reload();
     }
   };
 

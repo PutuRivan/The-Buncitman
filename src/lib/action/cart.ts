@@ -84,7 +84,7 @@ export async function postCarts({
           },
         },
       });
-      // console.log(newCartItem);
+      console.log(newCartItem);
       return newCartItem;
     }
   } catch (error) {
