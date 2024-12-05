@@ -125,7 +125,10 @@ const Page = () => {
                   quantity={item.quantity}
                   totalAmount={item.totalAmount}
                   imageUrl={item.product.imageUrl}
-                  handleRemove={() => handleRemove(item.id)}
+                  handleRemove={(e) => {
+                    e.preventDefault();
+                    handleRemove(item.id);
+                  }}
                   handleQuantityChange={handleQuantityChange}
                 />
               ))}
@@ -148,7 +151,10 @@ const Page = () => {
                   type="radio"
                   value={option}
                   checked={selectedShipping === option}
-                  onChange={() => setSelectedShipping(option)}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setSelectedShipping(option);
+                  }}
                 />
                 {option}
               </label>
@@ -164,7 +170,10 @@ const Page = () => {
                   type="radio"
                   value={method}
                   checked={selectedPayment === method}
-                  onChange={() => setSelectedPayment(method)}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setSelectedPayment(method);
+                  }}
                 />
                 {method}
               </label>

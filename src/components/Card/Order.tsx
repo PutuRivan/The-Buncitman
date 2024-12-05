@@ -75,14 +75,20 @@ const Order = ({
         <div className="flex justify-center gap-2">
           <button
             className="bg-gray-200 px-2 py-1 rounded-l-md"
-            onClick={decrementQuantity}
+            onClick={(e) => {
+              e.preventDefault();
+              decrementQuantity();
+            }}
           >
             -
           </button>
           <span className="bg-gray-100 px-2 py-1 rounded">{Quantity}</span>
           <button
             className="bg-gray-200 px-2 py-1 rounded-r-md"
-            onClick={incrementQuantity}
+            onClick={(e) => {
+              e.preventDefault();
+              incrementQuantity();
+            }}
           >
             +
           </button>

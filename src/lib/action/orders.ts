@@ -48,6 +48,8 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
+  console.log({ ExistingCart: ExistingCart });
+
   if (!ExistingCart) return new Error("Cart not found");
 
   const ExistingOrders = await prisma.orders.findMany({
@@ -60,6 +62,8 @@ export async function postAllOrders({ username }: PostOrder) {
       product: true,
     },
   });
+
+  console.log({ ExistingOrders: ExistingOrders });
 
   if (ExistingOrders.length === 0) {
     for (const item of ExistingCart) {

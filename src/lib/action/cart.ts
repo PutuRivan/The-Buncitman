@@ -49,8 +49,8 @@ export async function postCarts({
         user: true,
       },
     });
-    console.log({user:exitingUser});
-    
+
+    console.log({ exitingUser: exitingUser });
 
     if (exitingUser) {
       const updateCartItem = await prisma.cartItem.update({
@@ -68,7 +68,7 @@ export async function postCarts({
           name: ProductName,
         },
       });
-
+      
       const newCartItem = await prisma.cartItem.create({
         data: {
           quantity: quantity,
@@ -84,7 +84,6 @@ export async function postCarts({
           },
         },
       });
-      console.log(newCartItem);
       return newCartItem;
     }
   } catch (error) {
