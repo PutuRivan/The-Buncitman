@@ -45,7 +45,6 @@ const Shop = () => {
   return (
     <>
       <Header />
-
       <section className="flex flex-col gap-10 p-10">
         <div className="text-center">
           <h1 className="text-Heading-1 font-bold">Products</h1>
@@ -58,7 +57,10 @@ const Shop = () => {
           <select
             className="border px-4 py-2 rounded"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+              e.preventDefault();
+              setSelectedCategory(e.target.value);
+            }}
           >
             <option value="Coffee Beans">Coffee Beans</option>
             <option value="Coffee Drinks">Coffee Drinks</option>

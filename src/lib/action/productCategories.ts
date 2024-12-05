@@ -23,7 +23,5 @@ export async function getProductDetails(name: string) {
     },
   });
 
-  // console.log(data)
-
   return data;
 }
