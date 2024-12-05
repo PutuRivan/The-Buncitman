@@ -48,17 +48,34 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
-  const order = await prisma.orders.createMany({
-    data: ExistingCart.map((item) => ({
-      userId: user.id, // Use userId instead of user
-      productId: item.product.id, // Use productId from the cartItem
-      quantity: item.quantity,
-      totalAmount: item.product.price * item.quantity, // Example total amount
-      status: "pending",
-    })),
-  });
+  if (!ExistingCart) return new Error("Cart not found");
 
-  await prisma.cartItem.deleteMany({
+  if (ExistingCart) {
+    for (const item of ExistingCart) {
+      await prisma.orders.updateMany({
+        data: {
+          userId: user.id, // Use userId instead of user
+          productId: item.product.id, // Use productId from the cartItem
+          quantity: item.quantity,
+          totalAmount: item.product.price * item.quantity, // Example total amount
+          status: "pending",
+        },
+      });
+    }
+  }
+  for (const item of ExistingCart) {
+    await prisma.orders.createMany({
+      data: {
+        userId: user.id, // Use userId instead of user
+        productId: item.product.id, // Use productId from the cartItem
+        quantity: item.quantity,
+        totalAmount: item.product.price * item.quantity, // Example total amount
+        status: "pending",
+      },
+    });
+  }
+
+  const deleteCart = await prisma.cartItem.deleteMany({
     where: {
       user: {
         name: username,
@@ -71,7 +88,38 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
-  return order;
+  return deleteCart;
+}
+
+interface UpdateOrder {
+  id: string;
+  quantity: number;
+}
+
+export async function updateOrder({ id, quantity }: UpdateOrder) {
+  const orders = await prisma.orders.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      product: true,
+    },
+  });
+
+  if (!orders) {
+    throw new Error("Order not found");
+  }
+
+  const data = await prisma.orders.update({
+    where: {
+      id: id,
+    },
+    data: {
+      quantity: orders.product.price * quantity,
+    },
+  });
+
+  return data;
 }
 
 interface DeleteOrder {

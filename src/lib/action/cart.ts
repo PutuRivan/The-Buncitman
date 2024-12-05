@@ -49,7 +49,9 @@ export async function postCarts({
         user: true,
       },
     });
-    // console.log({user:exitingUser});
+    console.log({user:exitingUser});
+    
+
     if (exitingUser) {
       const updateCartItem = await prisma.cartItem.update({
         where: {

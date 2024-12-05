@@ -88,7 +88,6 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
   };
 
   const handleProceed = async (username: string, cartItems: CartItem[]) => {
-    console.log("Ditekan")
     const productName = cartItems.map((item) => item.product.id).toString();
     const post = await postAllOrders({
       username,
