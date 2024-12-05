@@ -50,19 +50,20 @@ export async function postAllOrders({ username }: PostOrder) {
 
   if (!ExistingCart) return new Error("Cart not found");
 
-  if (ExistingCart) {
-    for (const item of ExistingCart) {
-      await prisma.orders.updateMany({
-        data: {
-          userId: user.id, // Use userId instead of user
-          productId: item.product.id, // Use productId from the cartItem
-          quantity: item.quantity,
-          totalAmount: item.product.price * item.quantity, // Example total amount
-          status: "pending",
-        },
-      });
-    }
-  }
+  // if (ExistingCart) {
+  //   for (const item of ExistingCart) {
+  //     await prisma.orders.updateMany({
+  //       data: {
+  //         userId: user.id, // Use userId instead of user
+  //         productId: item.product.id, // Use productId from the cartItem
+  //         quantity: item.quantity,
+  //         totalAmount: item.product.price * item.quantity, // Example total amount
+  //         status: "pending",
+  //       },
+  //     });
+  //   }
+  // }
+  
   for (const item of ExistingCart) {
     await prisma.orders.createMany({
       data: {
