@@ -11,19 +11,19 @@ const contact = () => {
       id: 1,
       logo: <MdOutlineEmail size={45} />,
       description: "Reach us anytime for inquiries or feedback.",
-      contact: "info@bunciten.com",
+      contact: "info@buncitmen.com",
     },
     {
       id: 2,
       logo: <IoCallOutline size={45} />,
       description: "Reach us anytime for inquiries or feedback.",
-      contact: "info@bunciten.com",
+      contact: "info@buncitmen.com",
     },
     {
       id: 3,
       logo: <HiOutlineLocationMarker size={45} />,
       description: "Reach us anytime for inquiries or feedback.",
-      contact: "info@bunciten.com",
+      contact: "info@buncitmen.com",
     },
   ];
   return (

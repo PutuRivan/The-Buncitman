@@ -104,36 +104,38 @@ const Page = () => {
           <div className="font-bold text-neutral-500 flex items-center gap-3 mb-5">
             <h1>Lihat dulu pesananmu :</h1>
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="text-left text-neutral-600">
-                <th></th>
-                <th></th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((item, index) => (
-                <Order
-                  key={index}
-                  id={item.id}
-                  name={item.product.name}
-                  price={item.product.price}
-                  quantity={item.quantity}
-                  totalAmount={item.totalAmount}
-                  imageUrl={item.product.imageUrl}
-                  handleRemove={(e) => {
-                    e.preventDefault();
-                    handleRemove(item.id);
-                  }}
-                  handleQuantityChange={handleQuantityChange}
-                />
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-y-auto h-96">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-neutral-600">
+                  <th></th>
+                  <th></th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((item, index) => (
+                  <Order
+                    key={index}
+                    id={item.id}
+                    name={item.product.name}
+                    price={item.product.price}
+                    quantity={item.quantity}
+                    totalAmount={item.totalAmount}
+                    imageUrl={item.product.imageUrl}
+                    handleRemove={(e) => {
+                      e.preventDefault();
+                      handleRemove(item.id);
+                    }}
+                    handleQuantityChange={handleQuantityChange}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Summary Section */}

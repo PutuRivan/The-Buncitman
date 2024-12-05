@@ -101,7 +101,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
       });
     }
     router.push("/checkoutdetails");
-    
+
     closeCart();
   };
 
@@ -112,7 +112,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
           <SheetTitle>Your Cart</SheetTitle>
         </SheetHeader>
 
-        <div className="space-y-4 mt-4">
+        <div className="space-y-4 mt-4 h-[70vh] overflow-y-auto">
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
               <SideBarCart
@@ -139,7 +139,10 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
           <Button
             disabled={cartItems.length === 0}
             className="w-full mt-4"
-            onClick={() => handleProceed(username as string, cartItems)}
+            onClick={(e) => {
+              e.preventDefault();
+              handleProceed(username as string, cartItems);
+            }}
           >
             Proceed to Checkout
           </Button>

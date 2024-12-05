@@ -48,8 +48,6 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
-  console.log({ ExistingCart: ExistingCart });
-
   if (!ExistingCart) return new Error("Cart not found");
 
   const ExistingOrders = await prisma.orders.findMany({
@@ -63,35 +61,52 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
-  console.log({ ExistingOrders: ExistingOrders });
+  // Loop untuk memeriksa dan membuat order baru
+  for (const item of ExistingCart) {
+    const existingOrder = await prisma.orders.findFirst({
+      where: {
+        userId: user.id,
+        productId: item.product.id,
+      },
+    });
 
-  if (ExistingOrders.length === 0) {
-    for (const item of ExistingCart) {
-      await prisma.orders.createMany({
+    if (!existingOrder) {
+      const data = await prisma.orders.create({
         data: {
-          userId: user.id, // Use userId instead of user
-          productId: item.product.id, // Use productId from the cartItem
+          userId: user.id,
+          productId: item.product.id,
           quantity: item.quantity,
-          totalAmount: item.product.price * item.quantity, // Example total amount
+          totalAmount: item.product.price * item.quantity,
           status: "pending",
         },
       });
+      console.log({ data: data });
+    } else {
+      const updatedOrder = await prisma.orders.update({
+        where: { id: existingOrder.id },
+        data: {
+          quantity: existingOrder.quantity + item.quantity,
+          totalAmount:
+            item.product.price * (existingOrder.quantity + item.quantity),
+        },
+      });
+      console.log({ updatedOrder: updatedOrder });
     }
-  } else {
-    for (const item of ExistingOrders) {
-      for (const cartItem of ExistingCart) {
-        if (cartItem.product.name === item.product.name) {
-          await prisma.orders.updateMany({
-            where: {
-              id: item.id,
-            },
-            data: {
-              quantity: item.quantity + cartItem.quantity,
-              totalAmount:
-                item.product.price * (item.quantity + cartItem.quantity),
-            },
-          });
-        }
+  }
+  // Loop untuk update jika order sudah ada
+  for (const item of ExistingOrders) {
+    for (const cartItem of ExistingCart) {
+      if (cartItem.product.name === item.product.name) {
+        await prisma.orders.update({
+          where: {
+            id: item.id,
+          },
+          data: {
+            quantity: item.quantity + cartItem.quantity,
+            totalAmount:
+              item.product.price * (item.quantity + cartItem.quantity),
+          },
+        });
       }
     }
   }
