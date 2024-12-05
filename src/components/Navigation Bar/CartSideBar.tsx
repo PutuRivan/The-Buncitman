@@ -107,7 +107,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
 
   return (
     <Sheet open={isCartOpen} onOpenChange={closeCart}>
-      <SheetContent side="right" className="w-[300px]">
+      <SheetContent side="right" className="w-[400px]">
         <SheetHeader>
           <SheetTitle>Your Cart</SheetTitle>
         </SheetHeader>

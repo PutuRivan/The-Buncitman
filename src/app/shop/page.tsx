@@ -4,6 +4,8 @@ import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/action/productCategories";
 import React, { useEffect, useState } from "react";
+import ShopSL from "@/components/SkeletonLoad/ShopSL";
+import ShopCategorySL from "@/components/SkeletonLoad/ShopCategorySL";
 
 interface Product {
   id: string;
@@ -22,9 +24,10 @@ interface Product {
   };
 }
 
-const Shop = () => {
+const Shop: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("Coffee Beans");
+  const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -42,7 +45,14 @@ const Shop = () => {
     fetchProducts();
   }, [selectedCategory]);
 
-  return (
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
+    <ShopSL />
+  ) : (
     <>
       <Header />
       <section className="flex flex-col gap-10 p-10">
@@ -67,12 +77,13 @@ const Shop = () => {
           </select>
         </div>
 
-        <div>
-          <h2 className="text-Heading-2 mb-5 font-bold">{selectedCategory}</h2>
-
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
+        {loading ? (
+          <ShopCategorySL />
+        ) : (
+          <div>
+            <h2 className="text-Heading-2 mb-5 font-bold">
+              {selectedCategory}
+            </h2>
             <div className="grid grid-cols-4 gap-10 mx-10">
               {products
                 .filter((item) => item.category.name === selectedCategory)
@@ -86,8 +97,8 @@ const Shop = () => {
                   />
                 ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     </>
   );

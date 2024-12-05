@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
+import ProductSL from "@/components/SkeletonLoad/ProductSL";
 
 interface Product {
   id: string;
@@ -18,10 +19,11 @@ interface Product {
   description: string;
 }
 
-const Page = () => {
+const Page: React.FC = () =>  {
   const params = useParams<{ name: string }>();
   const decodedName = decodeURIComponent(params.name);
   const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -36,8 +38,13 @@ const Page = () => {
     fetchProductDetails();
   }, [decodedName]);
 
+   useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!product) {
-    return <div className="text-center text-2xl mt-10">Loading...</div>;
+    return <ProductSL />;
   }
 
   return (

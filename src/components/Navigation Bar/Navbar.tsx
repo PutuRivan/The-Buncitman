@@ -40,6 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const searchRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isScrolled, setIsScrolled] = useState<boolean>(false); // New state for scroll effect
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -56,11 +57,23 @@ const Navbar: React.FC<NavbarProps> = ({
   const handlesignOut = () => {
     signOut();
     toast({
-      title: "error",
-      description: "kamu sudah logout",
+      title: "Logout",
+      description: "You have been successfully logged out.",
       variant: "destructive",
     });
   };
+
+  // ini buat add scroll effect ke navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10); // bisa Adjust threshold nya
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -68,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({
         searchRef.current &&
         !searchRef.current.contains(event.target as Node)
       ) {
-        if (isSearchOpen) toggleSearch(); // Close search bar if open
+        if (isSearchOpen) toggleSearch();
       }
     };
 
@@ -80,14 +93,21 @@ const Navbar: React.FC<NavbarProps> = ({
   }, [isSearchOpen, toggleSearch]);
 
   return (
-    <nav className="flex justify-between items-center px-5 h-[85px] border-b-2 border-neutral-300 bg-white z-50 top-0 fixed w-full">
+    <nav
+      className={cn(
+        "w-full z-50 flex justify-between items-center px-5 h-[85px] transition-all duration-300",
+        isScrolled
+          ? "bg-white/90 top-0 fixed shadow-md h-[70px]"
+          : "bg-white border-b-2 border-neutral-300"
+      )}
+    >
       {/* Logo */}
       <div>
         <Image
           src="/The Buncitmen Logo.png"
           alt="Logo"
-          width={80}
-          height={80}
+          width={60} // Adjusted size for scroll effect
+          height={60}
         />
       </div>
 
@@ -144,43 +164,32 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div
-        className="flex flex-row items-center gap-4 relative"
-        style={{ width: "150px" }} // Fixed width for Action Buttons
-      >
+      <div className="flex flex-row items-center gap-4 relative" style={{width:"150px"}}>
         {/* Search Button with Search Bar */}
         <div
           ref={searchRef}
           className={cn(
-            "absolute right-40 top-0.8 flex items-center bg-white rounded-full overflow-hidden transition-all duration-300 ease-in-out",
+            "absolute right-40 flex items-center bg-white rounded-full overflow-hidden transition-all duration-300 ease-in-out",
             isSearchOpen
               ? "w-46 px-3 shadow-md border border-neutral-100"
               : "w-8"
           )}
         >
-          {/* Search Icon (inside the bar) */}
           <Search
             className="text-black cursor-pointer"
             onClick={toggleSearch}
           />
-          {/* Search Input */}
           {isSearchOpen && (
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearchSubmit();
-                }
-              }}
+              onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
               className="ml-2 py-2 flex-grow bg-transparent text-sm focus:outline-none"
               placeholder="Search..."
               autoFocus
             />
           )}
-
-          {/* Close/Submit Button */}
           {isSearchOpen && (
             <button
               className={cn(
@@ -208,9 +217,7 @@ const Navbar: React.FC<NavbarProps> = ({
             {status === "authenticated" ? (
               <MenubarContent>
                 <MenubarItem>{username}</MenubarItem>
-                <MenubarItem>
-                  <Link href="/checkoutdetails">Order</Link>
-                </MenubarItem>
+                <MenubarItem>Profile</MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>
                   <Button onClick={handlesignOut}>Logout</Button>
