@@ -2,17 +2,17 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { postCarts } from "@/lib/action/cart";
+import { postBuyNow } from "@/lib/action/orders";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React, { MouseEventHandler, useState } from "react";
 import { IoIosRemove, IoMdAdd } from "react-icons/io";
 
 interface Props {
   ProductName: string;
+  ProductId: string;
 }
 
-const AddToCart = ({ ProductName }: Props) => {
-  const router = useRouter();
+const AddToCart = ({ ProductName, ProductId }: Props) => {
   const [quantity, setQuantity] = useState(1);
   const { data: session } = useSession();
   const { toast } = useToast();
@@ -28,9 +28,44 @@ const AddToCart = ({ ProductName }: Props) => {
     setQuantity(quantity + 1);
   };
 
-  const handleBuyNow: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const handleBuyNow: MouseEventHandler<HTMLButtonElement> = async(event) => {
     event.preventDefault();
-    router.push("/viewcart");
+
+    if (!username) {
+      toast({
+        title: "error",
+        description: "Oops you must login",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await postBuyNow({ username, quantity, ProductId });
+
+      if (!response) {
+        toast({
+          title: "error",
+          description: "Oops something went wrong",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "success",
+          description: "Berhasil Menambahkan ke dalam Order",
+          variant: "success",
+        });
+        window.location.reload();
+        window.location.href = "/checkoutdetails";
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "error",
+        description: "Oops something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAddToCart: MouseEventHandler<HTMLFormElement> = async (event) => {
@@ -44,7 +79,7 @@ const AddToCart = ({ ProductName }: Props) => {
       });
       return;
     }
-    
+
     try {
       const response = await postCarts({ ProductName, username, quantity });
 

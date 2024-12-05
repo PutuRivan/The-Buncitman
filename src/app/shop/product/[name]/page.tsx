@@ -86,7 +86,7 @@ const Page = () => {
               <p className="text-Heading-4">{product.description}</p>
             </div>
           </div>
-          <AddToCart ProductName={product.name} />
+          <AddToCart ProductName={product.name} ProductId={product.id} />
         </div>
       </section>
     </>

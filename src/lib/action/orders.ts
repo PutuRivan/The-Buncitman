@@ -61,7 +61,6 @@ export async function postAllOrders({ username }: PostOrder) {
     },
   });
 
-
   if (ExistingOrders.length === 0) {
     for (const item of ExistingCart) {
       await prisma.orders.createMany({
@@ -92,8 +91,82 @@ export async function postAllOrders({ username }: PostOrder) {
       }
     }
   }
+}
 
+interface PostBuyNow {
+  username: string;
+  quantity: number;
+  ProductId: string;
+}
 
+export async function postBuyNow({
+  username,
+  quantity,
+  ProductId,
+}: PostBuyNow) {
+  const user = await prisma.users.findUnique({
+    where: {
+      name: username,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const ExistingOrders = await prisma.orders.findFirst({
+    where: {
+      user: {
+        name: username,
+      },
+    },
+    include: {
+      product: true,
+    },
+  });
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id: ProductId,
+    },
+  });
+
+  if (!product) return new Error("Product not found");
+
+  if (!ExistingOrders) {
+    const data = await prisma.orders.create({
+      data: {
+        user: {
+          connect: {
+            name: username,
+          },
+        },
+        product: {
+          connect: {
+            id: ProductId,
+          },
+        },
+        quantity: quantity,
+        totalAmount: product.price * quantity,
+        status: "pending",
+      },
+    });
+    return data;
+  } else {
+    const update = await prisma.orders.update({
+      where: {
+        userId_productId: {
+          userId: user.id,
+          productId: ProductId,
+        },
+      },
+      data: {
+        quantity: quantity,
+        totalAmount: product.price * quantity,
+      },
+    });
+    return update;
+  }
 }
 
 interface UpdateOrder {
