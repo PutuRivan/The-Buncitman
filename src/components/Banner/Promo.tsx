@@ -4,8 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { Coffee } from 'lucide-react';
-
+import { Coffee } from "lucide-react";
 
 const Promo = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,19 +23,19 @@ const Promo = () => {
     <div className="w-full bg-neutral-0 py-1">
       <div className="container mx-auto">
         <Alert className="border-black border-2">
-          <Coffee className="h-5 w-5 text-blue-500"/>
+          <Coffee className="h-5 w-5 " />
           <div className="flex items-center justify-between">
             <div>
-              <AlertTitle className="text-blue-500 font-bold">
+              <AlertTitle className="font-bold">
                 Selamatkan Hari Anda dengan Secangkir Kopi Spesial
               </AlertTitle>
-              <AlertDescription className="text-red-800">
+              <AlertDescription className="">
                 Diskon Hingga 50%! Segelas Kebaikan untuk Hari yang Lebih Baik
               </AlertDescription>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={handleClosePromo}
               className="hover:bg-red-100"
             >

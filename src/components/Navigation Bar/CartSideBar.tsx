@@ -112,7 +112,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
           <SheetTitle>Your Cart</SheetTitle>
         </SheetHeader>
 
-        <div className="space-y-4 mt-4 h-[70vh] overflow-y-auto">
+        <div className="space-y-4 mt-4 h-[70vh] overflow-y-auto scrollBar px-3">
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
               <SideBarCart
