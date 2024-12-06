@@ -23,5 +23,9 @@ export async function getProductDetails(name: string) {
     },
   });
 
+  if (!data) {
+    throw new Error("Product not found");
+  }
+
   return data;
 }

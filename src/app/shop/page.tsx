@@ -27,7 +27,6 @@ interface Product {
 const Shop: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("Coffee Beans");
-  const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -45,12 +44,7 @@ const Shop: React.FC = () => {
     fetchProducts();
   }, [selectedCategory]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
-    return () => clearTimeout(timer);
-  }, []);
-
-  return isLoading ? (
+  return loading ? (
     <ShopSL />
   ) : (
     <>

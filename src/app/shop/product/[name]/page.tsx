@@ -19,35 +19,35 @@ interface Product {
   description: string;
 }
 
-const Page: React.FC = () =>  {
+const Page: React.FC = () => {
   const params = useParams<{ name: string }>();
   const decodedName = decodeURIComponent(params.name);
   const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
+      setIsLoading(true);
       try {
         const details = await getProductDetails(decodedName);
         setProduct(details);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProductDetails();
   }, [decodedName]);
 
-   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!product) {
-    return <ProductSL />;
+  if (product === null) {
+    return <h1>Product not found</h1>;
   }
 
-  return (
+  return isLoading ? (
+    <ProductSL />
+  ) : (
     <>
       <Header />
       <section className="grid grid-cols-2 p-20 gap-10">
