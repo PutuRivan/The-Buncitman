@@ -147,7 +147,7 @@ const Page = () => {
           {/* Shipping Options */}
           <h3 className="font-semibold mb-2">Shipping Options</h3>
           <div className="flex flex-col gap-2">
-            {["Go Send", "Dianter Anjing"].map((option) => (
+            {["Go Send", "JNE"].map((option) => (
               <label key={option} className="flex items-center gap-2">
                 <input
                   type="radio"

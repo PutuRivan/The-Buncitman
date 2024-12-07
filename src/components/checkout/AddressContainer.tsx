@@ -19,10 +19,10 @@ const AddressContainer = () => {
 
   const [addresses, setAddresses] = useState([
     {
-      name: "Putu Rivan",
-      phone: "(+62)81288188592",
+      name: "User A",
+      phone: "(+62)812345678",
       address:
-        "Tria Adara Residence 10 no a 01, KOTA TANGERANG SELATAN - PAMULANG, BANTEN, ID 15434",
+        "Pokoknya Rumah",
     },
     {
       name: "Ammar Allezandro",
