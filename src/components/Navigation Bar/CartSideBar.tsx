@@ -139,8 +139,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
           <Button
             disabled={cartItems.length === 0}
             className="w-full mt-4"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
               handleProceed(username as string, cartItems);
             }}
           >
