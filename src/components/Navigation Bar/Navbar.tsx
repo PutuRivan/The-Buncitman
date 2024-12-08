@@ -164,7 +164,10 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-row items-center gap-4 relative" style={{width:"150px"}}>
+      <div
+        className="flex flex-row items-center gap-4 relative"
+        style={{ width: "150px" }}
+      >
         {/* Search Button with Search Bar */}
         <div
           ref={searchRef}
@@ -217,7 +220,9 @@ const Navbar: React.FC<NavbarProps> = ({
             {status === "authenticated" ? (
               <MenubarContent>
                 <MenubarItem>{username}</MenubarItem>
-                <MenubarItem>Profile</MenubarItem>
+                <MenubarItem>
+                  <Link href={"/checkoutdetails"}>Orders</Link>
+                </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>
                   <Button onClick={handlesignOut}>Logout</Button>
