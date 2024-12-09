@@ -27,88 +27,79 @@ interface PostOrder {
 }
 
 export async function postAllOrders({ username }: PostOrder) {
-  const user = await prisma.users.findUnique({
-    where: {
-      name: username,
-    },
-  });
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  const ExistingCart = await prisma.cartItem.findMany({
-    where: {
-      user: {
-        name: username,
-      },
-    },
-    include: {
-      product: true,
-    },
-  });
-
-  if (!ExistingCart) return new Error("Cart not found");
-
-  const ExistingOrders = await prisma.orders.findMany({
-    where: {
-      user: {
-        name: username,
-      },
-    },
-    include: {
-      product: true,
-    },
-  });
-
-  // Loop untuk memeriksa dan membuat order baru
-  for (const item of ExistingCart) {
-    const existingOrder = await prisma.orders.findFirst({
+  try {
+    const user = await prisma.users.findUnique({
       where: {
-        userId: user.id,
-        productId: item.product.id,
+        name: username,
       },
     });
 
-    if (!existingOrder) {
-      const data = await prisma.orders.create({
-        data: {
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const ExistingCart = await prisma.cartItem.findMany({
+      where: {
+        user: {
+          name: username,
+        },
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    if (!ExistingCart) return new Error("Cart not found");
+
+    // Loop untuk memeriksa dan membuat order baru
+    for (const item of ExistingCart) {
+      const existingOrder = await prisma.orders.findFirst({
+        where: {
           userId: user.id,
           productId: item.product.id,
-          quantity: item.quantity,
-          totalAmount: item.product.price * item.quantity,
-          status: "pending",
         },
       });
-      return data;
-    } else {
-      const updatedOrder = await prisma.orders.update({
-        where: { id: existingOrder.id },
-        data: {
-          quantity: existingOrder.quantity + item.quantity,
-          totalAmount:
-            item.product.price * (existingOrder.quantity + item.quantity),
-        },
-      });
-      return updatedOrder;
-    }
-  }
-  // Loop untuk update jika order sudah ada
-  for (const item of ExistingOrders) {
-    for (const cartItem of ExistingCart) {
-      if (cartItem.product.name === item.product.name) {
-        await prisma.orders.update({
+
+      if (!existingOrder) {
+        await prisma.orders.create({
+          data: {
+            userId: user.id,
+            productId: item.product.id,
+            quantity: item.quantity,
+            totalAmount: item.product.price * item.quantity,
+            status: "pending",
+          },
+        });
+
+        await prisma.cartItem.delete({
           where: {
             id: item.id,
+            productId: item.product.id,
           },
+        });
+      } else {
+        await prisma.orders.update({
+          where: { id: existingOrder.id },
           data: {
-            quantity: item.quantity + cartItem.quantity,
+            quantity: existingOrder.quantity + item.quantity,
             totalAmount:
-              item.product.price * (item.quantity + cartItem.quantity),
+              item.product.price * (existingOrder.quantity + item.quantity),
+          },
+        });
+        
+        await prisma.cartItem.delete({
+          where: {
+            id: item.id,
+            productId: item.product.id,
           },
         });
       }
     }
+
+    return ExistingCart;
+    
+  } catch (error) {
+    console.error(error);
   }
 }
 
