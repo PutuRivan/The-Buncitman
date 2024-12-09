@@ -4,9 +4,10 @@ import { formatPrice } from "@/utils/formatPrice";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
-import { deleteItem, getAllOrders } from "@/lib/action/orders";
+import { deleteItem, deleteOrders, getAllOrders } from "@/lib/action/orders";
 import Order from "@/components/Card/Order";
 import AddressContainer from "@/components/checkout/AddressContainer";
+import { createInvoice } from "@/lib/action/transaction";
 
 interface Order {
   id: string;
@@ -101,58 +102,18 @@ const Page = () => {
     options: checkoutOptions
   ) => {
     try {
-      // Susun items secara dinamis
-      const items = options.Orders.map((item) => ({
-        name: item.product.name,
-        quantity: item.quantity,
-        price: item.product.price,
-      }));
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_XENDIT_URL}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${process.env.NEXT_PUBLIC_XENDIT_API_KEY}`,
-        },
-        body: JSON.stringify({
-          external_id: `invoice-${Date.now()}`,
-          amount: total,
-          payer_email: email,
-          customer: {
-            given_names: username,
-            email: email,
-            addresses: [
-              {
-                city: "Jakarta Selatan",
-                country: "Indonesia",
-                postal_code: "12345",
-                street_line1: "Jalan Makan",
-              },
-            ],
-          },
-          customer_notification: {
-            invoice_created: ["whatsapp", "email", "viber"],
-            invoice_reminder: ["whatsapp", "email", "viber"],
-            invoice_paid: ["whatsapp", "email", "viber"],
-          },
-          success_redirect_url: "https://the-buncitman.vercel.app",
-          // failure_redirect_url: "https://your-website.com/failed",
-          currency: "IDR",
-          items: items, // Tambahkan items dinamis
-          fees: [
-            {
-              type: selectedShipping,
-              value: shippingFee,
-            },
-          ],
-          payment_methods: ["OVO", "DANA", "SHOPEEPAY", "LINKAJA", "QRIS"],
-        }),
+      const result = await createInvoice({
+        orders: options.Orders,
+        total,
+        email,
+        username,
+        selectedShipping,
+        shippingFee,
       });
-
-      const result = await response.json();
       // Redirect jika berhasil
       if (result.invoice_url) {
         window.location.href = result.invoice_url;
+        await deleteOrders(username);
       } else {
         console.error("Invoice URL not found", result);
       }

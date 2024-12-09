@@ -80,7 +80,7 @@ export async function postAllOrders({ username }: PostOrder) {
           status: "pending",
         },
       });
-      return data
+      return data;
     } else {
       const updatedOrder = await prisma.orders.update({
         where: { id: existingOrder.id },
@@ -90,7 +90,7 @@ export async function postAllOrders({ username }: PostOrder) {
             item.product.price * (existingOrder.quantity + item.quantity),
         },
       });
-      return updatedOrder
+      return updatedOrder;
     }
   }
   // Loop untuk update jika order sudah ada
@@ -232,4 +232,15 @@ export async function deleteItem({ id }: DeleteOrder) {
   });
 
   return ordersData;
+}
+
+export async function deleteOrders(username: string) {
+  const ordersDelete = await prisma.orders.deleteMany({
+    where: {
+      user: {
+        name: username,
+      },
+    },
+  });
+  return ordersDelete;
 }
