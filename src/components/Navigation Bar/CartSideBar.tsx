@@ -93,6 +93,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
       username,
       productName,
     });
+    
     if (post) {
       toast({
         title: "success",

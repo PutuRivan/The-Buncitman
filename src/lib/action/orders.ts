@@ -80,7 +80,7 @@ export async function postAllOrders({ username }: PostOrder) {
           status: "pending",
         },
       });
-      console.log({ data: data });
+      return data
     } else {
       const updatedOrder = await prisma.orders.update({
         where: { id: existingOrder.id },
@@ -90,7 +90,7 @@ export async function postAllOrders({ username }: PostOrder) {
             item.product.price * (existingOrder.quantity + item.quantity),
         },
       });
-      console.log({ updatedOrder: updatedOrder });
+      return updatedOrder
     }
   }
   // Loop untuk update jika order sudah ada
