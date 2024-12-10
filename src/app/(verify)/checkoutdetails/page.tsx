@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { deleteItem, deleteOrders, getAllOrders } from "@/lib/action/orders";
 import Order from "@/components/Card/Order";
 import { createInvoice } from "@/lib/action/transaction";
-import AddressContainer from "@/components/checkout/AddressContainer";
+import AddressContainer from "@/components/checkoutdetails/AddressContainer";
 
 interface Order {
   id: string;

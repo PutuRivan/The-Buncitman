@@ -4,8 +4,7 @@ import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/action/productCategories";
 import React, { useEffect, useState } from "react";
-import ShopSL from "@/components/skeleton/ShopSL";
-import ShopCategorySL from "@/components/skeleton/ShopCategorySL";
+import ProductSkeleton from "@/components/skeleton/Product-Skeleton";
 
 interface Product {
   id: string;
@@ -44,9 +43,7 @@ const Shop: React.FC = () => {
     fetchProducts();
   }, [selectedCategory]);
 
-  return loading ? (
-    <ShopSL />
-  ) : (
+  return (
     <>
       <Header />
       <section className="flex flex-col gap-10 p-10">
@@ -71,13 +68,11 @@ const Shop: React.FC = () => {
           </select>
         </div>
 
-        {loading ? (   
-          <ShopCategorySL />
-        ) : (
-          <div>
-            <h2 className="text-Heading-2 mb-5 font-bold">
-              {selectedCategory}
-            </h2>
+        <div>
+          <h2 className="text-Heading-2 mb-5 font-bold">{selectedCategory}</h2>
+          {loading ? (
+            <ProductSkeleton />
+          ) : (
             <div className="grid grid-cols-4 gap-10 mx-10">
               {products
                 .filter((item) => item.category.name === selectedCategory)
@@ -91,8 +86,8 @@ const Shop: React.FC = () => {
                   />
                 ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
     </>
   );

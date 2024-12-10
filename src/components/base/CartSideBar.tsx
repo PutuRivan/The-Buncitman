@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { deleteItem, getAllCarts } from "@/lib/action/cart";
-import SideBarCart from "../Card/SideBarCart";
+import SideBarCart from "../Card/CardSideBar";
 import { postAllOrders } from "@/lib/action/orders";
 
 interface CartItem {

@@ -1,5 +1,5 @@
 // import { login } from "@/lib/User";
-import FormLogin from "@/components/form/FormLogin";
+import FormLogin from "@/components/authForm/FormLogin";
 import React from "react";
 
 const page = () => {

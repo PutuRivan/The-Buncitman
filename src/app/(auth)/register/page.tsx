@@ -1,5 +1,5 @@
 // import { register } from "@/lib/User";
-import FormRegister from "@/components/form/FormRegister";
+import FormRegister from "@/components/authForm/FormRegister";
 import React from "react";
 
 const page = () => {
