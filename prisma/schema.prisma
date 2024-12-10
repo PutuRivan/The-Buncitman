@@ -15,12 +15,13 @@ datasource db {
 }
 
 model Users {
-  id       String     @id @default(cuid())
-  name     String     @unique
-  email    String     @unique
-  password String
-  orders   Orders[]
-  cart     CartItem[]
+  id        String      @id @default(cuid())
+  name      String      @unique
+  email     String      @unique
+  password  String
+  orders    Orders[]
+  cart      CartItem[]
+  Addresses Addresses[]
 }
 
 model Product {
@@ -44,6 +45,7 @@ model Orders {
   totalAmount Float
   status      String
   transaction Transactions?
+  addressesId String?
 
   @@unique([userId, productId])
 }
@@ -85,4 +87,18 @@ model Transactions {
   paymentId String
   payment   PaymentMethods @relation(fields: [paymentId], references: [id])
   status    String
+}
+
+model Addresses {
+  id         String @id @default(cuid())
+  userId     String
+  user       Users  @relation(fields: [userId], references: [id])
+  street     String
+  city       String
+  state      String
+  postalCode String
+  country    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

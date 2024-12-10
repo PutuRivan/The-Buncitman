@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { TbPointFilled } from "react-icons/tb";
 import {
@@ -9,39 +9,45 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { getAddresses } from "@/lib/action/addresses";
+import { useSession } from "next-auth/react";
+import AddressForm from "./AddressForm";
+import { Address } from "@/types";
+import AddressCard from "../Card/AddressCard";
 
 const AddressContainer = () => {
-  const [newAddress, setNewAddress] = useState({
-    name: "",
-    phone: "",
-    address: "",
-  });
-
-  const [addresses, setAddresses] = useState([
-    {
-      name: "User A",
-      phone: "(+62)812345678",
-      address:
-        "Pokoknya Rumah",
-    },
-    {
-      name: "Ammar Allezandro",
-      phone: "(+62)8751702205",
-      address: "Jl. Kemiri Jaya, Kota Depok, Jawa Barat, ID 16421",
-    },
-  ]);
-
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(addresses[0]);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const { data: session } = useSession();
+  const username = session?.user?.name;
+
+  useEffect(() => {
+    if (!username) return;
+
+    const fetchAddresses = async () => {
+      const response = await getAddresses(username);
+      setAddresses(response);
+      if (response.length > 0) {
+        setSelectedAddress(response[0]); // Set address pertama sebagai default
+      }
+    };
+    fetchAddresses();
+  }, [username]);
+
   const handleAddAddress = () => {
-    setAddresses((prev) => [...prev, newAddress]);
-    setNewAddress({ name: "", phone: "", address: "" });
-    setIsAddingNew(false);
+    console.log("add new Address");
   };
   const handleDeleteAddress = (index: number) => {
-    setAddresses(addresses.filter((_, i) => i !== index));
+    console.log("delete address", index);
+    // setAddresses(addresses.filter((_, i) => i !== index));
   };
+
+  if (!selectedAddress) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <section className="bg-white border border-neutral-100 rounded-lg shadow-sm p-5 mb-6">
       <div className="font-bold text-neutral-500 flex items-center gap-3 mb-3">
@@ -49,12 +55,16 @@ const AddressContainer = () => {
       </div>
       <div className="flex items-center gap-1 font-semibold text-neutral-900 pb-3">
         <FaMapMarkerAlt size={17} />
-        <h2>{selectedAddress.name}</h2>
+        <h2>{selectedAddress.user.name}</h2>
         <TbPointFilled size={12} />
-        <h2>{selectedAddress.phone}</h2>
+        <h2>{selectedAddress.user.name}</h2>
       </div>
       <div className="text-neutral-700 flex justify-between items-center">
-        <h3>{selectedAddress.address}</h3>
+        <h3>
+          {selectedAddress.street}, {selectedAddress.city},{" "}
+          {selectedAddress.state}, {selectedAddress.country},{" "}
+          {selectedAddress.postalCode}{" "}
+        </h3>
         <Dialog
           open={isAddingNew || dialogOpen}
           onOpenChange={(open) => setDialogOpen(open)}
@@ -70,93 +80,23 @@ const AddressContainer = () => {
             </DialogHeader>
             {isAddingNew ? (
               // Add New Address Form
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={newAddress.name}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, name: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={newAddress.phone}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, phone: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-md"
-                />
-                <textarea
-                  placeholder="Address"
-                  value={newAddress.address}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, address: e.target.value })
-                  }
-                  className="w-full border border-gray-300 p-2 rounded-md"
-                ></textarea>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setIsAddingNew(false)}
-                    className="w-full bg-gray-200 text-black py-2 rounded-md hover:bg-gray-300"
-                  >
-                    Back
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleAddAddress();
-                      setDialogOpen(false); // Close the dialog
-                    }}
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
+              <AddressForm
+                setIsAddingNew={setIsAddingNew}
+                setDialogOpen={setDialogOpen}
+                handleAddAddress={handleAddAddress}
+              />
             ) : (
               // Address List View
               <div className="space-y-3">
                 {addresses.map((addr, index) => (
-                  <div
+                  <AddressCard
                     key={index}
-                    className={`flex justify-between items-center p-3 border rounded-md ${
-                      selectedAddress === addr
-                        ? "border-blue-500"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <div>
-                      <input
-                        type="radio"
-                        name="address"
-                        value={addr.name}
-                        checked={selectedAddress === addr}
-                        onChange={() => setSelectedAddress(addr)}
-                      />
-                      <span className="ml-2 font-semibold">{addr.name}</span>
-                      <p className="text-sm text-neutral-600">{addr.phone}</p>
-                      <p className="text-sm text-neutral-600">{addr.address}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleDeleteAddress(index)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        Remove
-                      </button>
-                      <button
-                        onClick={() => {
-                          setNewAddress(addr);
-                          setIsAddingNew(true);
-                        }}
-                        className="text-blue-500 hover:font-medium"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </div>
+                    item={addr}
+                    setSelectedAddress={setSelectedAddress}
+                    setIsAddingNew={setIsAddingNew}
+                    handleDeleteAddress={() => handleDeleteAddress(index)}
+                    selectedAddress={null}
+                  />
                 ))}
                 <button
                   onClick={() => setIsAddingNew(true)}
