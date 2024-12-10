@@ -1,7 +1,8 @@
 "use client";
 
 import Header from "@/components/Banner/Header";
-import AddToCart from "@/components/form/AddToCart";
+import AddToCart from "@/components/shop/Details-AddToCart";
+import ProductSL from "@/components/skeleton/Details-Skeleton";
 import { getProductDetails } from "@/lib/action/productCategories";
 import { formatPrice } from "@/utils/formatPrice";
 import { random } from "@/utils/randomStars";
@@ -9,7 +10,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
-import ProductSL from "@/components/SkeletonLoad/ProductSL";
 
 interface Product {
   id: string;

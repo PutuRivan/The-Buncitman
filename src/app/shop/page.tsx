@@ -4,8 +4,8 @@ import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
 import { getAllProducts } from "@/lib/action/productCategories";
 import React, { useEffect, useState } from "react";
-import ShopSL from "@/components/SkeletonLoad/ShopSL";
-import ShopCategorySL from "@/components/SkeletonLoad/ShopCategorySL";
+import ShopSL from "@/components/skeleton/ShopSL";
+import ShopCategorySL from "@/components/skeleton/ShopCategorySL";
 
 interface Product {
   id: string;
@@ -71,7 +71,7 @@ const Shop: React.FC = () => {
           </select>
         </div>
 
-        {loading ? (
+        {loading ? (   
           <ShopCategorySL />
         ) : (
           <div>

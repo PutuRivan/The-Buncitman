@@ -28,7 +28,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
     setQuantity(quantity + 1);
   };
 
-  const handleBuyNow: MouseEventHandler<HTMLButtonElement> = async(event) => {
+  const handleBuyNow: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
 
     if (!username) {
@@ -68,9 +68,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
     }
   };
 
-  const handleAddToCart: MouseEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
-
+  const handleAddToCart = async () => {
     if (!username) {
       toast({
         title: "error",
@@ -108,9 +106,16 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
   };
 
   return (
-    <form onSubmit={handleAddToCart} className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-3">
       <div className="flex flex-col gap-3">
-        <button type="submit" className="border-2 border-black p-2">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
+          type="submit"
+          className="border-2 border-black p-2"
+        >
           Add to Cart
         </button>
         <button
@@ -151,7 +156,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
           </button>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

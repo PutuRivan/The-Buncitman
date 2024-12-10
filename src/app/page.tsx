@@ -8,7 +8,7 @@ import { Testimoni } from "@/data/testimonial";
 import Image from "next/image";
 import Link from "next/link";
 import { RxCaretRight } from "react-icons/rx";
-import HomeSL from "@/components/SkeletonLoad/HomeSL";
+import HomeSL from "@/components/skeleton/HomeSL";
 
 const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);

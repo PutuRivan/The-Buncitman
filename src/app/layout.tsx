@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, ReactNode } from "react";
-import Navbar from "@/components/Navigation Bar/Navbar";
+import Navbar from "@/components/base/Navbar";
 import "./globals.css";
 import Promo from "@/components/Banner/Promo";
-import Footer from "@/components/Navigation Bar/Footer";
-import CartSidebar from "@/components/Navigation Bar/CartSideBar";
+import Footer from "@/components/base/Footer";
+import CartSidebar from "@/components/base/CartSideBar";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
 import Session from "@/components/Providers/Session";
