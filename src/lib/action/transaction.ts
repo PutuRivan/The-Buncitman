@@ -1,5 +1,7 @@
 "use server";
 
+import { deleteOrders } from "./orders";
+
 interface OrderItem {
   product: {
     name: string;
@@ -8,6 +10,16 @@ interface OrderItem {
   quantity: number;
 }
 
+// interface Address {
+//   name: string;
+//   phone: string;
+//   street: string;
+//   city: string;
+//   state: string;
+//   postalCode: string;
+//   country: string;
+// }
+
 interface CreateInvoiceParams {
   orders: OrderItem[]; // Array of order items
   total: number; // Total price of the order
@@ -15,6 +27,7 @@ interface CreateInvoiceParams {
   username: string; // Customer name
   selectedShipping: string; // Selected shipping method
   shippingFee: number; // Shipping fee value
+  // Addresses: Address[];
 }
 
 export async function createInvoice({
@@ -32,6 +45,16 @@ export async function createInvoice({
       price: item.product.price,
     }));
 
+    // const address = Addresses.map((item) => ({
+    //   name: item.name,
+    //   phone: item.phone,
+    //   street: item.street,
+    //   city: item.city,
+    //   state: item.state,
+    //   postalCode: item.postalCode,
+    //   country: item.country,
+    // }));
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_XENDIT_URL}`, {
       method: "POST",
       headers: {
@@ -47,10 +70,12 @@ export async function createInvoice({
           email: email,
           addresses: [
             {
-              city: "Jakarta Selatan",
+              city: "Pamulang",
+              state: "Banten",
+              postal_code: "15435",
               country: "Indonesia",
-              postal_code: "12345",
-              street_line1: "Jalan Makan",
+
+              street_line1: "Jl Mahoni",
             },
           ],
         },
@@ -74,6 +99,11 @@ export async function createInvoice({
     });
 
     const result = await response.json();
+
+    if (response.ok) {
+      await deleteOrders(username);
+    }
+
     return result;
   } catch (error) {
     console.error("Error creating invoice", error);

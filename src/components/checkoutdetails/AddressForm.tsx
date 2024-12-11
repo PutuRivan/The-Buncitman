@@ -1,25 +1,34 @@
+import { postAddress } from "@/lib/action/addresses";
 import React, { useState } from "react";
 
 interface AddressFormProps {
   setIsAddingNew: React.Dispatch<React.SetStateAction<boolean>>;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAddAddress: () => void;
+  username: string | undefined;
 }
 
 const AddressForm = ({
   setIsAddingNew,
   setDialogOpen,
-  handleAddAddress,
+  username,
 }: AddressFormProps) => {
-  
   const [newAddress, setNewAddress] = useState({
     name: "",
     phone: "",
-    address: "",
+    street: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
   });
 
+  const handleAddAddress = async () => {
+    if (!username) return;
+    const response = await postAddress({ username, ...newAddress });
+    if (response) setIsAddingNew(false);
+  };
   return (
-    <div className="space-y-3">
+    <form className="space-y-3">
       <input
         type="text"
         placeholder="Name"
@@ -36,14 +45,50 @@ const AddressForm = ({
         }
         className="w-full border border-gray-300 p-2 rounded-md"
       />
-      <textarea
-        placeholder="Address"
-        value={newAddress.address}
+      <input
+        type="text"
+        placeholder="Street"
+        value={newAddress.street}
         onChange={(e) =>
-          setNewAddress({ ...newAddress, address: e.target.value })
+          setNewAddress({ ...newAddress, street: e.target.value })
         }
         className="w-full border border-gray-300 p-2 rounded-md"
-      ></textarea>
+      />
+      <input
+        type="text"
+        placeholder="City"
+        value={newAddress.city}
+        onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+        className="w-full border border-gray-300 p-2 rounded-md"
+      />
+      <input
+        type="text"
+        placeholder="State"
+        value={newAddress.state}
+        onChange={(e) =>
+          setNewAddress({ ...newAddress, state: e.target.value })
+        }
+        className="w-full border border-gray-300 p-2 rounded-md"
+      />
+      <input
+        type="text"
+        placeholder="Postal Code"
+        value={newAddress.postalCode}
+        onChange={(e) =>
+          setNewAddress({ ...newAddress, postalCode: e.target.value })
+        }
+        className="w-full border border-gray-300 p-2 rounded-md"
+      />
+      <input
+        type="text"
+        placeholder="Country"
+        value={newAddress.country}
+        onChange={(e) =>
+          setNewAddress({ ...newAddress, country: e.target.value })
+        }
+        className="w-full border border-gray-300 p-2 rounded-md"
+      />
+
       <div className="flex gap-2">
         <button
           onClick={() => setIsAddingNew(false)}
@@ -61,7 +106,7 @@ const AddressForm = ({
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

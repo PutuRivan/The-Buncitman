@@ -16,3 +16,54 @@ export async function getAddresses(username: string) {
 
   return data;
 }
+
+interface PostAddress {
+  username: string;
+  name: string;
+  phone: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+export async function postAddress({
+  username,
+  name,
+  phone,
+  street,
+  city,
+  state,
+  postalCode,
+  country,
+}: PostAddress) {
+  const data = await prisma.addresses.create({
+    data: {
+      user: {
+        connect: {
+          name: username,
+        },
+      },
+      name,
+      phone,
+      street,
+      city,
+      state,
+      postalCode,
+      country,
+    },
+  });
+
+  return data;
+}
+
+export async function deleteAddress(id: string) {
+  const data = await prisma.addresses.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return data;
+}

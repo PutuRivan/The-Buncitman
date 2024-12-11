@@ -25,6 +25,13 @@ const FormSchema = z
       .string()
       .min(1, { message: "Email is required" })
       .email("Invalid email address"),
+    phone: z
+      .string()
+      .min(1, { message: "Nomor telepon tidak boleh kosong." })
+      .regex(/^\+?\d{10,15}$/, {
+        message:
+          "Nomor telepon harus berupa angka dan dapat diawali dengan tanda '+' dengan panjang 10-15 karakter.",
+      }),
     password: z
       .string()
       .min(1, { message: "Password is required" })
@@ -48,12 +55,14 @@ const FormRegister = () => {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    console.log(values);
     const response = await fetch("/api/user", {
       method: "POST",
       headers: {
@@ -62,6 +71,7 @@ const FormRegister = () => {
       body: JSON.stringify({
         name: values.name,
         email: values.email,
+        phone: values.phone,
         password: values.password,
       }),
     });
@@ -81,6 +91,7 @@ const FormRegister = () => {
       });
     }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -106,6 +117,19 @@ const FormRegister = () => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter Your Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter Your Phone Number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

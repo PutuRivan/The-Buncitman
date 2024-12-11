@@ -3,10 +3,10 @@ import React, { Dispatch, SetStateAction } from "react";
 
 interface AddressCard {
   selectedAddress: Address | null;
-  setSelectedAddress: Dispatch<SetStateAction<Address | null>>;
+  setSelectedAddress: (address: Address) => void;
   setIsAddingNew: Dispatch<SetStateAction<boolean>>;
   item: Address;
-  handleDeleteAddress: (index: number) => void;
+  handleDeleteAddress: (index: string) => void;
 }
 
 const AddressCard = ({
@@ -16,6 +16,7 @@ const AddressCard = ({
   item,
   handleDeleteAddress,
 }: AddressCard) => {
+  
   return (
     <div
       className={`flex justify-between items-center p-3 border rounded-md ${
@@ -36,7 +37,7 @@ const AddressCard = ({
       </div>
       <div className="flex gap-2">
         <button
-          onClick={() => handleDeleteAddress}
+          onClick={() => handleDeleteAddress(item.id)}
           className="text-red-500 hover:text-red-700"
         >
           Remove

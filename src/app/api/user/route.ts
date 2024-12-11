@@ -9,23 +9,33 @@ const userSchema = z.object({
     .string()
     .min(1, { message: "Email is required" })
     .email("Invalid email address"),
+  phone: z
+    .string()
+    .min(1, { message: "Nomor telepon tidak boleh kosong." })
+    .regex(/^\+?\d{10,15}$/, {
+      message:
+        "Nomor telepon harus berupa angka dan dapat diawali dengan tanda '+' dengan panjang 10-15 karakter.",
+    }),
   password: z
     .string()
     .min(1, { message: "Password is required" })
     .min(8, { message: "Password must be 8 characters or more" }),
 });
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { email, name, password } = userSchema.parse(body);
-
+    const { email, name, password, phone } = userSchema.parse(body);
+    console.log({ email, name, password, phone });
     // Check Email
     const existUserByEmail = await prisma.users.findUnique({
       where: {
         email,
       },
     });
+
+    console.log({exist :existUserByEmail});
 
     if (existUserByEmail) {
       return NextResponse.json(
@@ -48,10 +58,12 @@ export async function POST(req: Request) {
       );
     }
     const hashPassword = await hash(password, 10);
+
     const newUser = await prisma.users.create({
       data: {
         email,
         name,
+        phone,
         password: hashPassword,
       },
     });

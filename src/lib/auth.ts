@@ -7,7 +7,7 @@ import prisma from "./db";
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 20 * 24 * 60 * 60 },
   pages: {
     signIn: "/login",
   },
