@@ -95,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav
       className={cn(
-        "w-full z-50 flex justify-between items-center px-5 h-[85px] transition-all duration-300",
+        "w-full z-50 flex justify-between items-center px-10 h-[85px] transition-all duration-300",
         isScrolled
           ? "bg-white/90 top-0 fixed shadow-md h-[70px]"
           : "bg-white border-b-2 border-neutral-300"
@@ -112,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Combined Navigation */}
-      <div className="flex items-center gap-8">
+      <div className="flex items-center">
         <NavigationMenu>
           <NavigationMenuList className="flex flex-row gap-4">
             {/* Home Link */}
@@ -222,6 +222,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 <MenubarItem>{username}</MenubarItem>
                 <MenubarItem>
                   <Link href={"/checkoutdetails"}>Orders</Link>
+                </MenubarItem>
+                <MenubarItem>
+                  <Link href={`${username}/history`}>History</Link>
                 </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>

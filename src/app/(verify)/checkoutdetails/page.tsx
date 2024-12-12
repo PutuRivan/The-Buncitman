@@ -188,7 +188,7 @@ const Page = () => {
               <FaMapMarkerAlt size={17} />
               <h2>{selectedAddress.name}</h2>
               <TbPointFilled size={12} />
-              <h2>{selectedAddress.name}</h2>
+              <h2>{selectedAddress.phone}</h2>
             </div>
             <div className="text-neutral-700 flex justify-between items-center">
               <h3>
