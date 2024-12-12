@@ -10,15 +10,15 @@ interface OrderItem {
   quantity: number;
 }
 
-// interface Address {
-//   name: string;
-//   phone: string;
-//   street: string;
-//   city: string;
-//   state: string;
-//   postalCode: string;
-//   country: string;
-// }
+interface Address {
+  name: string;
+  phone: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
 
 interface CreateInvoiceParams {
   orders: OrderItem[]; // Array of order items
@@ -27,7 +27,7 @@ interface CreateInvoiceParams {
   username: string; // Customer name
   selectedShipping: string; // Selected shipping method
   shippingFee: number; // Shipping fee value
-  // Addresses: Address[];
+  Addresses: Address[];
 }
 
 export async function createInvoice({
@@ -37,6 +37,7 @@ export async function createInvoice({
   username,
   selectedShipping,
   shippingFee,
+  Addresses,
 }: CreateInvoiceParams) {
   try {
     const items = orders.map((item) => ({
@@ -44,16 +45,6 @@ export async function createInvoice({
       quantity: item.quantity,
       price: item.product.price,
     }));
-
-    // const address = Addresses.map((item) => ({
-    //   name: item.name,
-    //   phone: item.phone,
-    //   street: item.street,
-    //   city: item.city,
-    //   state: item.state,
-    //   postalCode: item.postalCode,
-    //   country: item.country,
-    // }));
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_XENDIT_URL}`, {
       method: "POST",
@@ -70,10 +61,10 @@ export async function createInvoice({
           email: email,
           addresses: [
             {
-              city: "Pamulang",
-              state: "Banten",
-              postal_code: "15435",
-              country: "Indonesia",
+              city: Addresses[0].city,
+              state: Addresses[0].state,
+              postal_code: Addresses[0].postalCode,
+              country: Addresses[0].country,
 
               street_line1: "Jl Mahoni",
             },
