@@ -42,6 +42,7 @@ interface CartSidebarProps {
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [proceedLoading, setProceedLoading] = useState(false);
   const router = useRouter();
   const { data: session } = useSession();
   const { toast } = useToast();
@@ -88,22 +89,29 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
   };
 
   const handleProceed = async (username: string, cartItems: CartItem[]) => {
-    const productName = cartItems.map((item) => item.product.id).toString();
-    const post = await postAllOrders({
-      username,
-      productName,
-    });
-    
-    if (post) {
-      toast({
-        title: "success",
-        description: "Order Placed Successfully",
-        variant: "default",
+    try {
+      setProceedLoading(true);
+      const productName = cartItems.map((item) => item.product.id).toString();
+      const post = await postAllOrders({
+        username,
+        productName,
       });
-    }
-    router.push("/checkoutdetails");
 
-    closeCart();
+      if (post) {
+        toast({
+          title: "success",
+          description: "Order Placed Successfully",
+          variant: "default",
+        });
+      }
+      router.push("/checkoutdetails");
+
+      closeCart();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setProceedLoading(false);
+    }
   };
 
   return (
@@ -137,15 +145,21 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
             <p className="font-medium">Subtotal</p>
             <p>Rp {calculateTotal()}</p>
           </div>
-          <Button
-            disabled={cartItems.length === 0}
-            className="w-full mt-4"
-            onClick={() => {
-              handleProceed(username as string, cartItems);
-            }}
-          >
-            Proceed to Checkout
-          </Button>
+          {proceedLoading ? (
+            <Button className="w-full mt-4" disabled variant="ghost">
+              Loading...
+            </Button>
+          ) : (
+            <Button
+              disabled={cartItems.length === 0}
+              className="w-full mt-4"
+              onClick={() => {
+                handleProceed(username as string, cartItems);
+              }}
+            >
+              Proceed to Checkout
+            </Button>
+          )}
         </div>
       </SheetContent>
     </Sheet>

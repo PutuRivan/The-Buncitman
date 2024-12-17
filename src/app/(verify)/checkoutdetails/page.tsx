@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { TbPointFilled } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
 
 interface Order {
   id: string;
@@ -68,6 +69,7 @@ const Page = () => {
     postalCode: "",
     country: "",
   });
+  const [loadingCheckout, setLoadingCheckout] = useState(false);
   const username = session?.user?.name;
   const email = session?.user?.email;
 
@@ -138,7 +140,7 @@ const Page = () => {
     options: checkoutOptions
   ) => {
     try {
-      console.log({ selectedAddress: selectedAddress });
+      setLoadingCheckout(true);
       if (selectedAddress === undefined) {
         toast({
           title: "Error",
@@ -166,6 +168,8 @@ const Page = () => {
       }
     } catch (error) {
       console.error("Checkout Error", error);
+    } finally {
+      setLoadingCheckout(false);
     }
   };
 
@@ -444,17 +448,23 @@ const Page = () => {
           </div>
 
           {/* Buat Checkout Button */}
-          <button
-            className="bg-blue-500 text-white w-full py-2 mt-4 rounded-md hover:bg-blue-600"
-            onClick={() =>
-              handleCheckout(username as string, email as string, total, {
-                Orders: orders,
-              })
-            }
-            aria-label="Proceed to checkout"
-          >
-            Checkout
-          </button>
+          {loadingCheckout ? (
+            <Button className="w-full mt-4" disabled variant="ghost">
+              Loading...
+            </Button>
+          ) : (
+            <Button
+              className="bg-blue-500 text-white w-full py-2 mt-4 rounded-md hover:bg-blue-600"
+              onClick={() =>
+                handleCheckout(username as string, email as string, total, {
+                  Orders: orders,
+                })
+              }
+              aria-label="Proceed to checkout"
+            >
+              Checkout
+            </Button>
+          )}
         </div>
       </section>
     </main>

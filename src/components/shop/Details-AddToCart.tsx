@@ -6,6 +6,7 @@ import { postBuyNow } from "@/lib/action/orders";
 import { useSession } from "next-auth/react";
 import React, { MouseEventHandler, useState } from "react";
 import { IoIosRemove, IoMdAdd } from "react-icons/io";
+import { Button } from "../ui/button";
 
 interface Props {
   ProductName: string;
@@ -14,6 +15,8 @@ interface Props {
 
 const AddToCart = ({ ProductName, ProductId }: Props) => {
   const [quantity, setQuantity] = useState(1);
+  const [buyNowLoading, setBuyNowLoading] = useState(false);
+  const [addToCartLoading, setAddToCartLoading] = useState(false);
   const { data: session } = useSession();
   const { toast } = useToast();
 
@@ -30,17 +33,16 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
 
   const handleBuyNow: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
-
-    if (!username) {
-      toast({
-        title: "error",
-        description: "Oops you must login",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
+      setBuyNowLoading(true);
+      if (!username) {
+        toast({
+          title: "error",
+          description: "Oops you must login",
+          variant: "destructive",
+        });
+        return;
+      }
       const response = await postBuyNow({ username, quantity, ProductId });
 
       if (!response) {
@@ -65,20 +67,22 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
         description: "Oops something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setBuyNowLoading(false);
     }
   };
 
   const handleAddToCart = async () => {
-    if (!username) {
-      toast({
-        title: "error",
-        description: "Oops you must login",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
+      setAddToCartLoading(true);
+      if (!username) {
+        toast({
+          title: "error",
+          description: "Oops you must login",
+          variant: "destructive",
+        });
+        return;
+      }
       const response = await postCarts({ ProductName, username, quantity });
 
       if (!response) {
@@ -102,28 +106,43 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
         description: "Oops something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setAddToCartLoading(false);
     }
   };
 
   return (
     <div className="grid grid-cols-2 gap-3">
       <div className="flex flex-col gap-3">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            handleAddToCart();
-          }}
-          type="submit"
-          className="border-2 border-black p-2"
-        >
-          Add to Cart
-        </button>
-        <button
-          onClick={handleBuyNow}
-          className="border-2 border-black p-2 bg-black text-white"
-        >
-          Buy Now
-        </button>
+        {addToCartLoading ? (
+          <Button disabled variant="ghost">
+            Loading
+          </Button>
+        ) : (
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handleAddToCart();
+            }}
+            type="submit"
+            className="border-2 border-black p-2"
+          >
+            Add to Cart
+          </Button>
+        )}
+
+        {buyNowLoading ? (
+          <Button disabled variant="ghost">
+            Loading
+          </Button>
+        ) : (
+          <Button
+            onClick={handleBuyNow}
+            className="border-2 border-black p-2 bg-black text-white"
+          >
+            Buy Now
+          </Button>
+        )}
       </div>
       <div className="flex flex-col items-center">
         <label htmlFor="quantity">Quantity</label>
