@@ -2,7 +2,7 @@
 
 import Header from "@/components/Banner/Header";
 import Product from "@/components/Card/Product";
-import ProductSkeleton from "@/components/skeleton/Product-Skeleton";
+import ProductSkeleton from "@/components/LoadAnimation/ProductSL";
 import { getSearchQuery } from "@/lib/action/product";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";

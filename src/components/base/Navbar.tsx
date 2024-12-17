@@ -97,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = ({
       className={cn(
         "w-full z-50 flex justify-between items-center px-10 h-[85px] transition-all duration-300",
         isScrolled
-          ? "bg-white/90 top-0 fixed shadow-md h-[70px]"
+          ? "bg-white/95 top-0 fixed shadow-md h-[70px]"
           : "bg-white border-b-2 border-neutral-300"
       )}
     >
@@ -130,7 +130,7 @@ const Navbar: React.FC<NavbarProps> = ({
               </Link>
             </NavigationMenuItem>
 
-            {/* Shop Dropdown */}
+            {/* Shop yg kagak Dropdown */}
             <NavigationMenuItem>
               <Link href="/shop" legacyBehavior passHref>
                 <NavigationMenuLink

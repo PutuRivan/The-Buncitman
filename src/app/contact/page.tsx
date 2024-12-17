@@ -29,12 +29,12 @@ const contact = () => {
   return (
     <>
       <section className="grid grid-cols-2 gap-5">
-        <div className="flex flex-col justify-center p-10">
+        <div className="flex flex-col justify-center p-10 gap-8">
           <h1 className="text-Heading-1 font-bold">
             Discover The Buncitmen: Your Destination for Premium Coffee
             Experiences
           </h1>
-          <p className="text-Heading-3 font-semibold">
+          <p className="text-Heading-3 font-semibold text-neutral-500">
             At The Buncitmen, we are passionate about delivering the finest
             coffee products. Our carefully sourced coffee beans and expertly
             crafted coffee bottles ensure every sip is a delightful experience.

@@ -145,21 +145,19 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isCartOpen, closeCart }) => {
             <p className="font-medium">Subtotal</p>
             <p>Rp {calculateTotal()}</p>
           </div>
-          {proceedLoading ? (
-            <Button className="w-full mt-4" disabled variant="ghost">
-              Loading...
-            </Button>
-          ) : (
-            <Button
-              disabled={cartItems.length === 0}
-              className="w-full mt-4"
-              onClick={() => {
-                handleProceed(username as string, cartItems);
-              }}
-            >
-              Proceed to Checkout
-            </Button>
-          )}
+          <Button
+            disabled={cartItems.length === 0 || proceedLoading}
+            className="w-full mt-4"
+            onClick={() => {
+              handleProceed(username as string, cartItems);
+            }}
+          >
+            {proceedLoading ? (
+              <div className="w-5 h-5 border-2 border-t-transparent border-black rounded-full animate-spin"></div>
+            ) : (
+              "Proceed to Checkout"
+            )}
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

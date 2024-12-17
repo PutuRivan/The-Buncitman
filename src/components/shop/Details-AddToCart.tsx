@@ -17,10 +17,15 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
   const [quantity, setQuantity] = useState(1);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
   const [addToCartLoading, setAddToCartLoading] = useState(false);
+  const [globalLoading, setGlobalLoading] = useState(false); // Global lock state
   const { data: session } = useSession();
   const { toast } = useToast();
-
+  
   const username = session?.user?.name;
+
+  const handleGlobalLoading = (state: boolean) => {
+    setGlobalLoading(state);
+  };
 
   const handleMinus = () => {
     if (quantity <= 1) return;
@@ -33,8 +38,9 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
 
   const handleBuyNow: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
+    setBuyNowLoading(true);
+    handleGlobalLoading(true);
     try {
-      setBuyNowLoading(true);
       if (!username) {
         toast({
           title: "error",
@@ -57,7 +63,6 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
           description: "Berhasil Menambahkan ke dalam Order",
           variant: "success",
         });
-        window.location.reload();
         window.location.href = "/checkoutdetails";
       }
     } catch (error) {
@@ -69,12 +74,14 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
       });
     } finally {
       setBuyNowLoading(false);
+      handleGlobalLoading(false);
     }
   };
 
   const handleAddToCart = async () => {
+    setAddToCartLoading(true);
+    handleGlobalLoading(true);
     try {
-      setAddToCartLoading(true);
       if (!username) {
         toast({
           title: "error",
@@ -108,42 +115,49 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
       });
     } finally {
       setAddToCartLoading(false);
+      handleGlobalLoading(false);
     }
   };
 
   return (
-    <div className="grid grid-cols-2 gap-3">
-      <div className="flex flex-col gap-3">
-        {addToCartLoading ? (
-          <Button disabled variant="ghost">
-            Loading
-          </Button>
-        ) : (
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              handleAddToCart();
-            }}
-            type="submit"
-            className="border-2 border-black p-2"
-          >
-            Add to Cart
-          </Button>
-        )}
+    <div className="relative grid grid-cols-2 gap-3">
+      {/* Global Loading Overlay */}
+      {globalLoading && (
+        <div className="fixed inset-0 bg-black opacity-25 z-50 pointer-events-auto" />
+      )}
 
-        {buyNowLoading ? (
-          <Button disabled variant="ghost">
-            Loading
-          </Button>
-        ) : (
-          <Button
-            onClick={handleBuyNow}
-            className="border-2 border-black p-2 bg-black text-white"
-          >
-            Buy Now
-          </Button>
-        )}
+      <div className="flex flex-col gap-3">
+        {/* Add to Cart Button */}
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
+          disabled={addToCartLoading || globalLoading}
+          className="border-2 border-black p-2"
+        >
+          {addToCartLoading ? (
+            <div className="w-5 h-5 border-2 border-t-transparent border-black rounded-full animate-spin"></div>
+          ) : (
+            "Add to Cart"
+          )}
+        </Button>
+
+        {/* Buy Now Button */}
+        <Button
+          onClick={handleBuyNow}
+          disabled={buyNowLoading || globalLoading}
+          className="border-2 border-black p-2 bg-black text-white"
+        >
+          {buyNowLoading ? (
+            <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+          ) : (
+            "Buy Now"
+          )}
+        </Button>
       </div>
+
+      {/* Quantity Input */}
       <div className="flex flex-col items-center">
         <label htmlFor="quantity">Quantity</label>
         <div className="border-y-2 border-black flex flex-row gap-4 w-full">
@@ -164,7 +178,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
                 setQuantity(newValue);
               }
             }}
-            className="w-full text-center"
+            className="w-full text-center bg-neutral-50"
           />
           <button
             type="button"

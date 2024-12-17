@@ -2,6 +2,7 @@
 
 import { formatPrice } from "@/utils/formatPrice";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { deleteItem, deleteOrders, getAllOrders } from "@/lib/action/orders";
@@ -24,6 +25,7 @@ import {
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { TbPointFilled } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
+import { GoArrowLeft } from "react-icons/go";
 
 interface Order {
   id: string;
@@ -60,6 +62,8 @@ const Page = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const router = useRouter();
+  const [backLoading, setBackLoading] = useState(false); // State for "Back" button loading
   const [newAddress, setNewAddress] = useState({
     name: "",
     phone: "",
@@ -69,6 +73,9 @@ const Page = () => {
     postalCode: "",
     country: "",
   });
+  const [addLocationLoading, setAddLocationLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [saveAddressLoading, setSaveAddressLoading] = useState(false);
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const username = session?.user?.name;
   const email = session?.user?.email;
@@ -133,6 +140,31 @@ const Page = () => {
     console.log(response);
   };
 
+  // Handle Add New Location with Loading
+  const handleAddNewLocation = async () => {
+    setAddLocationLoading(true);
+    setTimeout(() => {
+      setIsAddingNew(true);
+      setAddLocationLoading(false);
+    }, 1000);
+  };
+
+  // Handle Confirm Button with Loading
+  const handleConfirmAddress = async () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setDialogOpen(false);
+      setConfirmLoading(false);
+    }, 1000);
+  };
+
+  // Handle Save Address with Loading
+  const handleSaveAddress = async () => {
+    setSaveAddressLoading(true);
+    await handleAddAddress();
+    setSaveAddressLoading(false);
+  };
+
   const handleCheckout = async (
     username: string,
     email: string,
@@ -177,6 +209,14 @@ const Page = () => {
     if (!username) return;
     const response = await postAddress({ username, ...newAddress });
     if (response) setIsAddingNew(false);
+  };
+
+  const handleBack = () => {
+    setBackLoading(true);
+    setTimeout(() => {
+      router.push("/shop");
+      setBackLoading(false);
+    }, 1000); // Simulated loading time for navigation (intinya sim load time nya lah)
   };
 
   return (
@@ -292,12 +332,17 @@ const Page = () => {
                   </button>
                   <button
                     onClick={() => {
+                      handleSaveAddress();
                       handleAddAddress();
                       setDialogOpen(false); // Close the dialog
                     }}
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                    className="w-full bg-primary-500 text-white py-2 rounded-md hover:bg-primary-600 flex justify-center items-center gap-2"
                   >
-                    Save
+                    {saveAddressLoading ? (
+                      <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                    ) : (
+                      "Save"
+                    )}
                   </button>
                 </div>
               </form>
@@ -337,7 +382,7 @@ const Page = () => {
                           setNewAddress(addr);
                           setIsAddingNew(true);
                         }}
-                        className="text-blue-500 hover:font-medium"
+                        className="text-primary-700 hover:font-medium"
                       >
                         Edit
                       </button>
@@ -345,22 +390,34 @@ const Page = () => {
                   </div>
                 ))}
                 <button
-                  onClick={() => setIsAddingNew(true)}
-                  className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                  onClick={() => {
+                    handleAddNewLocation();
+                    setIsAddingNew(true);
+                  }}
+                  className="w-full bg-primary-700 text-white py-2 rounded-md hover:bg-primary-600 flex justify-center items-center gap-2"
                 >
-                  Add New Location
+                  {addLocationLoading ? (
+                    <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                  ) : (
+                    "Add New Location"
+                  )}
                 </button>
               </div>
             )}
             {!isAddingNew && (
-              <DialogFooter>
-                <button
-                  onClick={() => setDialogOpen(false)}
-                  className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                >
-                  Confirm
-                </button>
-              </DialogFooter>
+              <button
+                onClick={() => {
+                  handleConfirmAddress();
+                  setDialogOpen(false); // Close the dialog
+                }}
+                className="w-full bg-primary-700 text-white py-2 rounded-md hover:bg-primary-600 flex justify-center items-center gap-2"
+              >
+                {confirmLoading ? (
+                  <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                ) : (
+                  "Confirm"
+                )}
+              </button>
             )}
           </DialogContent>
         </Dialog>
@@ -372,6 +429,21 @@ const Page = () => {
         <div className="lg:w-3/4 bg-white border border-neutral-100 rounded-lg shadow-sm p-5">
           <div className="font-bold text-neutral-500 flex items-center gap-3 mb-5">
             <h1>Lihat dulu pesananmu :</h1>
+            {/* Back Button */}
+            <div className="p-2 mt-0 ml-80 pl-64">
+              <Button
+                onClick={handleBack}
+                disabled={backLoading}
+                className="px-4 py-2 mb-2 bg-neutral-800 hover:bg-gray-300"
+              >
+                <GoArrowLeft />
+                {backLoading ? (
+                  <div className="w-5 h-5 border-2 border-t-transparent border-black rounded-full animate-spin"></div>
+                ) : (
+                  "Mau Nambah ?"
+                )}
+              </Button>
+            </div>
           </div>
           <div className="overflow-y-auto h-96">
             <table className="w-full">
@@ -409,7 +481,7 @@ const Page = () => {
 
         {/* Summary Section */}
         <div className="lg:w-1/3 bg-white border border-neutral-100 rounded-lg shadow-sm p-5">
-          <h2 className="text-lg text-blue-500 font-semibold text-center mb-4">
+          <h2 className="text-lg text-primary-500 font-semibold text-center mb-4">
             Delivery Details
           </h2>
 
@@ -448,23 +520,21 @@ const Page = () => {
           </div>
 
           {/* Buat Checkout Button */}
-          {loadingCheckout ? (
-            <Button className="w-full mt-4" disabled variant="ghost">
-              Loading...
-            </Button>
-          ) : (
-            <Button
-              className="bg-blue-500 text-white w-full py-2 mt-4 rounded-md hover:bg-blue-600"
-              onClick={() =>
-                handleCheckout(username as string, email as string, total, {
-                  Orders: orders,
-                })
-              }
-              aria-label="Proceed to checkout"
-            >
-              Checkout
-            </Button>
-          )}
+          <Button
+            onClick={() =>
+              handleCheckout(username as string, email as string, total, {
+                Orders: orders,
+              })
+            }
+            className="w-full bg-primary-500 text-white py-2 rounded-md hover:bg-primary-600 flex justify-center items-center gap-2"
+            disabled={loadingCheckout}
+          >
+            {loadingCheckout ? (
+              <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+            ) : (
+              "Checkout"
+            )}
+          </Button>
         </div>
       </section>
     </main>

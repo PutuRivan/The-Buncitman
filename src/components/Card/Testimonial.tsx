@@ -5,6 +5,7 @@ interface Props {
   name: string;
   deskripsi: string;
   image: string;
+  className?: string; 
 }
 
 const Testimonial = ({ name, deskripsi, image }: Props) => {

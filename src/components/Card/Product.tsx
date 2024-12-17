@@ -10,23 +10,32 @@ interface Props {
   imageUrl: string;
 }
 
-const Product = ({  name, price, imageUrl }: Props) => {
+const Product = ({ name, price, imageUrl }: Props) => {
   return (
-    <Link href={`/shop/product/${name}`} className="w-auto">
-      <figure className="flex justify-center">
+    <Link
+      href={`/shop/product/${name}`}
+      className="block w-full p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-neutral-50 hover:bg-neutral-100"
+    >
+      {/* Product Image */}
+      <figure className="relative flex justify-center items-center overflow-hidden rounded-lg">
         <Image
           src={imageUrl}
           alt={name}
           width={256}
           height={256}
-          className="w-64 h-64"
+          className="w-64 h-64 object-cover transition-transform duration-300 hover:scale-105"
         />
       </figure>
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-col items-center w-full">
-          <h2 className="text-Heading-3 font-bold">{name}</h2>
-          <h4 className="text-Heading-4">{formatPrice(price)}</h4>
-        </div>
+
+      {/* Product Details */}
+      <div className="mt-4 text-center">
+        {/* Product Name */}
+        <h2 className="text-lg font-bold text-neutral-800 truncate">{name}</h2>
+        
+        {/* Product Price */}
+        <h4 className="text-sm font-semibold text-primary-600 mt-2">
+          {formatPrice(price)}
+        </h4>
       </div>
     </Link>
   );

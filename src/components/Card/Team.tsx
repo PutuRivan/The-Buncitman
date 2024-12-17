@@ -4,6 +4,7 @@ interface Props {
   name: string;
   position: string;
   image: string;
+  className?: string; 
 }
 
 const Team = ({ name, position, image }: Props) => {
