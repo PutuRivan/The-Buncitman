@@ -1,11 +1,15 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoCallOutline } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
-import Contact from "@/components/Card/Contact";
+import React, { useEffect, useState } from "react";
+import ContactSL from "@/components/LoadAnimation/ContactSL";
+import ContactCard from "@/components/Card/Contact";
 
-const contact = () => {
+const Contact = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const arrayContact = [
     {
       id: 1,
@@ -26,7 +30,15 @@ const contact = () => {
       contact: "info@buncitmen.com",
     },
   ];
-  return (
+
+  useEffect(() => {
+      const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
+      return () => clearTimeout(timer);
+    }, []);
+
+  return isLoading ? (
+    <ContactSL />
+  ) : (
     <>
       <section className="grid grid-cols-2 gap-5">
         <div className="flex flex-col justify-center p-10 gap-8">
@@ -60,9 +72,9 @@ const contact = () => {
         </div>
         <div className="grid grid-cols-3 gap-10">
           {arrayContact.map((items) => (
-            <Contact
+            <ContactCard
               key={items.id}
-              Logo={items.logo}
+              logo={items.logo}
               description={items.description}
               contactInfo={items.contact}
             />
@@ -73,4 +85,4 @@ const contact = () => {
   );
 };
 
-export default contact;
+export default Contact;

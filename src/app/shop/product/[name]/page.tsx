@@ -70,10 +70,11 @@ const ProductPage: React.FC = () => {
         <Button
           onClick={handleBack}
           disabled={backLoading}
-          className="flex items-center gap-2 px-4 py-2 bg-neutral-800 hover:bg-neutral-600 text-white rounded-md"
+          variant="link"
+          className="flex items-center gap-2 px-4 py-2 bg-neutral-50 hover:text-neutral-500 text-neutral-800 rounded-md"
         >
           {backLoading ? (
-            <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+            <div className="w-4 h-4 border-2 border-t-transparent border-black rounded-full animate-spin"></div>
           ) : (
             <GoArrowLeft />
           )}
@@ -111,11 +112,7 @@ const ProductPage: React.FC = () => {
                 {Array(random(5))
                   .fill(0)
                   .map((_, index) => (
-                    <FaStar
-                      key={index}
-                      size={20}
-                      className="text-yellow-500"
-                    />
+                    <FaStar key={index} size={20} className="text-yellow-500" />
                   ))}
               </div>
               <span className="text-sm text-neutral-500">

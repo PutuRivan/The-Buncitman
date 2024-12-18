@@ -25,6 +25,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { TbPointFilled } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
 import { GoArrowLeft } from "react-icons/go";
+import CheckoutSL from "@/components/LoadAnimation/CheckoutSL";
 
 interface Order {
   id: string;
@@ -76,6 +77,7 @@ const Page = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [saveAddressLoading, setSaveAddressLoading] = useState(false);
   const [loadingCheckout, setLoadingCheckout] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const username = session?.user?.name;
   const email = session?.user?.email;
 
@@ -218,7 +220,14 @@ const Page = () => {
     }, 1000); // Simulated loading time for navigation (intinya sim load time nya lah)
   };
 
-  return (
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000); // Simulate loading
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
+    <CheckoutSL />
+  ) : (
     <main className="flex flex-col my-10 px-4 sm:px-10">
       {/* Address Section */}
       <section className="bg-white border border-neutral-100 rounded-lg shadow-sm p-5 mb-6">
