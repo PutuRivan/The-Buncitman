@@ -19,7 +19,6 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FaMapMarkerAlt } from "react-icons/fa";
