@@ -4,13 +4,13 @@ import React from "react";
 import {
   FaFacebook,
   FaInstagram,
-  FaXTwitter,
+  FaXTwitter,   
   FaYoutube,
 } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-row justify-between p-20 bg-white border-t-4 border-neutral-100">
+    <footer className="flex flex-row justify-between p-20 bg-[#F6F6F6] border-t-2 border-neutral-100">
       <div className="flex flex-col gap-2">
         <div className="">
           <Image
