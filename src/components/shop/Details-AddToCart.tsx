@@ -134,7 +134,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
             handleAddToCart();
           }}
           disabled={addToCartLoading || globalLoading}
-          className="border-2 border-black p-2"
+          className="border-2 border-black p-2 bg-black"
         >
           {addToCartLoading ? (
             <div className="w-5 h-5 border-2 border-t-transparent border-black rounded-full animate-spin"></div>
@@ -147,7 +147,7 @@ const AddToCart = ({ ProductName, ProductId }: Props) => {
         <Button
           onClick={handleBuyNow}
           disabled={buyNowLoading || globalLoading}
-          className="border-2 border-black p-2 bg-black text-white"
+          className="border-2 border-black p-2 bg-white text-black"
         >
           {buyNowLoading ? (
             <div className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
